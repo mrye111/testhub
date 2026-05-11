@@ -1,112 +1,114 @@
 <template>
-  <div class="execution-list">
-    <div class="header">
-      <h1>{{ $t('execution.testPlan') }}</h1>
-      <div class="header-actions">
-        <el-button
-          v-if="selectedPlans.length > 0"
-          type="danger"
-          :icon="Delete"
-          @click="batchDeletePlans"
-          :disabled="isDeleting">
-          {{ $t('execution.batchDelete') }} ({{ selectedPlans.length }})
-        </el-button>
-        <el-button type="primary" @click="openCreatePlanDialog">
-          <el-icon><Plus /></el-icon>
-          {{ $t('execution.newPlan') }}
-        </el-button>
-      </div>
-    </div>
-
-    <div class="filter-bar">
-      <el-form :inline="true">
-        <el-form-item :label="$t('execution.project')">
-          <el-select v-model="filters.project" :placeholder="$t('execution.selectProject')" clearable style="width: 200px">
-            <el-option v-for="item in projects" :key="item.id" :label="item.name" :value="item.id"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('execution.status')">
-          <el-select v-model="filters.is_active" :placeholder="$t('execution.selectStatus')" clearable style="width: 120px">
-            <el-option :label="$t('execution.filterActive')" :value="true"></el-option>
-            <el-option :label="$t('execution.filterClosed')" :value="false"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="applyFilters">{{ $t('common.search') }}</el-button>
-          <el-button @click="resetFilters">{{ $t('common.reset') }}</el-button>
-        </el-form-item>
-      </el-form>
-    </div>
-
-    <el-table
-      :data="testPlans"
-      style="width: 100%"
-      v-loading="loading"
-      @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" />
-      <el-table-column
-        type="index"
-        :label="$t('execution.serialNumber')"
-        width="80"
-        :index="getSerialNumber" />
-      <el-table-column prop="name" :label="$t('execution.planName')" min-width="200">
-        <template #default="scope">
-          <el-link type="primary" @click="viewPlan(scope.row.id)">
-            {{ scope.row.name }}
-          </el-link>
-        </template>
-      </el-table-column>
-      <el-table-column prop="projects" :label="$t('execution.projects')" width="200">
-        <template #default="scope">
-          <span v-if="scope.row.projects && scope.row.projects.length > 0">
-            {{ scope.row.projects.join(', ') }}
-          </span>
-          <span v-else>{{ $t('execution.noData') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column prop="version" :label="$t('execution.version')" width="120"></el-table-column>
-      <el-table-column prop="creator.username" :label="$t('execution.creator')" width="120"></el-table-column>
-      <el-table-column :label="$t('execution.status')" width="100">
-        <template #default="scope">
-          <el-tag :type="scope.row.is_active ? 'success' : 'info'">
-            {{ scope.row.is_active ? $t('execution.active') : $t('execution.closed') }}
-          </el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column prop="created_at" :label="$t('execution.createdAt')" width="180">
-        <template #default="scope">
-          {{ formatDate(scope.row.created_at) }}
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('execution.actions')" width="200" fixed="right">
-        <template #default="scope">
-          <el-button size="small" type="primary" @click="viewPlan(scope.row.id)">
-            {{ $t('execution.viewExecution') }}
-          </el-button>
-          <el-button size="small" type="warning" @click="editPlan(scope.row)">
-            {{ $t('common.edit') }}
-          </el-button>
+  <div class="page-container execution-list">
+    <div class="card-container">
+      <div class="filter-bar">
+        <div class="filter-bar__fields">
+          <el-form :inline="true">
+            <el-form-item :label="$t('execution.project')">
+              <el-select v-model="filters.project" :placeholder="$t('execution.selectProject')" clearable style="width: 200px">
+                <el-option v-for="item in projects" :key="item.id" :label="item.name" :value="item.id"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item :label="$t('execution.status')">
+              <el-select v-model="filters.is_active" :placeholder="$t('execution.selectStatus')" clearable style="width: 120px">
+                <el-option :label="$t('execution.filterActive')" :value="true"></el-option>
+                <el-option :label="$t('execution.filterClosed')" :value="false"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="applyFilters">{{ $t('common.search') }}</el-button>
+              <el-button @click="resetFilters">{{ $t('common.reset') }}</el-button>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="filter-bar__actions">
           <el-button
-            size="small"
-            :type="scope.row.is_active ? 'danger' : 'success'"
-            @click="togglePlanStatus(scope.row)">
-            {{ scope.row.is_active ? $t('execution.closePlan') : $t('execution.activatePlan') }}
+            v-if="selectedPlans.length > 0"
+            type="danger"
+            :icon="Delete"
+            @click="batchDeletePlans"
+            :disabled="isDeleting">
+            {{ $t('execution.batchDelete') }} ({{ selectedPlans.length }})
           </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+          <el-button type="primary" @click="openCreatePlanDialog">
+            <el-icon><Plus /></el-icon>
+            {{ $t('execution.newPlan') }}
+          </el-button>
+        </div>
+      </div>
 
-    <div class="pagination">
-      <el-pagination
-        v-model:current-page="currentPage"
-        v-model:page-size="pageSize"
-        :page-sizes="[10, 20, 50, 100]"
-        :small="false"
-        :total="total"
-        layout="total, sizes, prev, pager, next, jumper"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-      />
+      <div class="table-container">
+        <el-table
+          :data="testPlans"
+          style="width: 100%"
+          v-loading="loading"
+          @selection-change="handleSelectionChange">
+          <el-table-column type="selection" width="55" />
+          <el-table-column
+            type="index"
+            :label="$t('execution.serialNumber')"
+            width="80"
+            :index="getSerialNumber" />
+          <el-table-column prop="name" :label="$t('execution.planName')" min-width="200">
+            <template #default="scope">
+              <el-link type="primary" @click="viewPlan(scope.row.id)">
+                {{ scope.row.name }}
+              </el-link>
+            </template>
+          </el-table-column>
+          <el-table-column prop="projects" :label="$t('execution.projects')" width="200">
+            <template #default="scope">
+              <span v-if="scope.row.projects && scope.row.projects.length > 0">
+                {{ scope.row.projects.join(', ') }}
+              </span>
+              <span v-else>{{ $t('execution.noData') }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="version" :label="$t('execution.version')" width="120"></el-table-column>
+          <el-table-column prop="creator.username" :label="$t('execution.creator')" width="120"></el-table-column>
+          <el-table-column :label="$t('execution.status')" width="100">
+            <template #default="scope">
+              <el-tag :type="scope.row.is_active ? 'success' : 'info'">
+                {{ scope.row.is_active ? $t('execution.active') : $t('execution.closed') }}
+              </el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="created_at" :label="$t('execution.createdAt')" width="180">
+            <template #default="scope">
+              {{ formatDate(scope.row.created_at) }}
+            </template>
+          </el-table-column>
+          <el-table-column :label="$t('execution.actions')" width="200" fixed="right">
+            <template #default="scope">
+              <el-button size="small" type="primary" @click="viewPlan(scope.row.id)">
+                {{ $t('execution.viewExecution') }}
+              </el-button>
+              <el-button size="small" type="warning" @click="editPlan(scope.row)">
+                {{ $t('common.edit') }}
+              </el-button>
+              <el-button
+                size="small"
+                :type="scope.row.is_active ? 'danger' : 'success'"
+                @click="togglePlanStatus(scope.row)">
+                {{ scope.row.is_active ? $t('execution.closePlan') : $t('execution.activatePlan') }}
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+
+        <div class="pagination-container">
+          <el-pagination
+            v-model:current-page="currentPage"
+            v-model:page-size="pageSize"
+            :page-sizes="[10, 20, 50, 100]"
+            :small="false"
+            :total="total"
+            layout="total, sizes, prev, pager, next, jumper"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+          />
+        </div>
+      </div>
     </div>
 
     <!-- 创建测试计划对话框 -->
@@ -650,7 +652,7 @@ onMounted(() => {
 
 <style scoped>
 .execution-list {
-  padding: 20px;
+  /* page-container handles padding via global.scss */
 }
 
 .header {
@@ -663,19 +665,6 @@ onMounted(() => {
 .header-actions {
   display: flex;
   gap: 10px;
-}
-
-.filter-bar {
-  margin-bottom: 20px;
-  padding: 16px;
-  background: #f8f9fa;
-  border-radius: 4px;
-}
-
-.pagination {
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
 }
 
 .dialog-footer {

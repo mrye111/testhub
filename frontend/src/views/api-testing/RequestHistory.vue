@@ -1,29 +1,30 @@
 <template>
-  <div class="request-history">
-    <div class="header">
-      <h3>{{ $t('apiTesting.history.title') }}</h3>
-      <div class="filters">
-        <el-input
-          v-model="searchText"
-          :placeholder="$t('apiTesting.history.searchRequest')"
-          style="width: 200px"
-          clearable
-          @input="loadHistory"
-        />
-        <el-button
-          type="danger"
-          :disabled="selectedIds.length === 0"
-          @click="handleBatchDelete"
-        >
-          {{ $t('apiTesting.history.batchDelete') }}
-        </el-button>
-        <el-button @click="clearHistory" type="danger" plain>
-          {{ $t('apiTesting.history.clearHistory') }}
-        </el-button>
+  <div class="request-history page-container">
+    <div class="card-container">
+      <div class="card-toolbar">
+        <h3 style="margin: 0;">{{ $t('apiTesting.history.title') }}</h3>
+        <div class="filters" style="margin-left: auto; display: flex; gap: 8px; align-items: center;">
+          <el-input
+            v-model="searchText"
+            :placeholder="$t('apiTesting.history.searchRequest')"
+            style="width: 200px"
+            clearable
+            @input="loadHistory"
+          />
+          <el-button
+            type="danger"
+            :disabled="selectedIds.length === 0"
+            @click="handleBatchDelete"
+          >
+            {{ $t('apiTesting.history.batchDelete') }}
+          </el-button>
+          <el-button @click="clearHistory" type="danger" plain>
+            {{ $t('apiTesting.history.clearHistory') }}
+          </el-button>
+        </div>
       </div>
-    </div>
 
-    <el-tabs v-model="activeTab" @tab-change="onTabChange">
+      <el-tabs v-model="activeTab" @tab-change="onTabChange">
       <el-tab-pane :label="$t('apiTesting.history.httpRequest')" name="HTTP">
         <HistoryTable
           :data="httpHistory"
@@ -55,8 +56,9 @@
       layout="total, sizes, prev, pager, next, jumper"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-      class="pagination"
+      class="pagination-container"
     />
+    </div>
 
     <!-- 详情对话框 -->
     <el-dialog

@@ -1,36 +1,37 @@
 <template>
   <div class="page-container">
-    <div style="margin-bottom: 20px;">
-      <el-button type="primary" @click="handleCreateProject">
-        <el-icon><Plus /></el-icon>
-        {{ $t('project.newProject') }}
-      </el-button>
-    </div>
-
     <div class="card-container">
       <div class="filter-bar">
-        <el-row :gutter="20">
-          <el-col :span="6">
-            <el-input
-              v-model="searchText"
-              :placeholder="$t('project.searchPlaceholder')"
-              clearable
-              @input="handleSearch"
-            >
-              <template #prefix>
-                <el-icon><Search /></el-icon>
-              </template>
-            </el-input>
-          </el-col>
-          <el-col :span="4">
-            <el-select v-model="statusFilter" :placeholder="$t('project.statusFilter')" clearable @change="handleFilter">
-              <el-option :label="$t('project.active')" value="active" />
-              <el-option :label="$t('project.paused')" value="paused" />
-              <el-option :label="$t('project.completed')" value="completed" />
-              <el-option :label="$t('project.archived')" value="archived" />
-            </el-select>
-          </el-col>
-        </el-row>
+        <div class="filter-bar__fields">
+          <el-row :gutter="20">
+            <el-col :span="6">
+              <el-input
+                v-model="searchText"
+                :placeholder="$t('project.searchPlaceholder')"
+                clearable
+                @input="handleSearch"
+              >
+                <template #prefix>
+                  <el-icon><Search /></el-icon>
+                </template>
+              </el-input>
+            </el-col>
+            <el-col :span="4">
+              <el-select v-model="statusFilter" :placeholder="$t('project.statusFilter')" clearable @change="handleFilter">
+                <el-option :label="$t('project.active')" value="active" />
+                <el-option :label="$t('project.paused')" value="paused" />
+                <el-option :label="$t('project.completed')" value="completed" />
+                <el-option :label="$t('project.archived')" value="archived" />
+              </el-select>
+            </el-col>
+          </el-row>
+        </div>
+        <div class="filter-bar__actions">
+          <el-button type="primary" @click="handleCreateProject">
+            <el-icon><Plus /></el-icon>
+            {{ $t('project.newProject') }}
+          </el-button>
+        </div>
       </div>
       
       <el-table :data="projects" v-loading="loading" style="width: 100%">

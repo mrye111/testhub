@@ -1,12 +1,12 @@
 <template>
-  <div class="notification-management">
-    <!-- 顶部标题 -->
-    <div class="header">
-      <h3>{{ $t('apiTesting.notification.title') }}</h3>
-    </div>
+  <div class="notification-management page-container">
+    <div class="card-container">
+      <div class="card-toolbar">
+        <h3 style="margin: 0;">{{ $t('apiTesting.notification.title') }}</h3>
+      </div>
 
-    <!-- Tab页 -->
-    <el-tabs v-model="activeTab" class="notification-tabs">
+      <!-- Tab页 -->
+      <el-tabs v-model="activeTab" class="notification-tabs">
       <!-- 通知列表Tab -->
       <el-tab-pane :label="$t('apiTesting.notification.notificationList')" name="list">
         <div class="tab-content">
@@ -221,6 +221,7 @@
         </div>
       </el-tab-pane>
     </el-tabs>
+    </div>
 
     <!-- 通知详情对话框 -->
     <el-dialog

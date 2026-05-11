@@ -1,59 +1,59 @@
 <template>
   <div class="page-container">
-    <h1 class="page-title">{{ $t('testcase.title') }}</h1>
-    <div style="margin-bottom: 20px;" class="header-actions">
-      <el-button
-        v-if="selectedTestCases.length > 0"
-        type="danger"
-        @click="batchDeleteTestCases"
-        :disabled="isDeleting">
-        <el-icon><Delete /></el-icon>
-        {{ $t('testcase.batchDelete') }} ({{ selectedTestCases.length }})
-      </el-button>
-      <el-button type="success" @click="exportToExcel">
-        <el-icon><Download /></el-icon>
-        {{ $t('testcase.exportExcel') }}
-      </el-button>
-      <el-button type="primary" @click="$router.push('/ai-generation/testcases/create')">
-        <el-icon><Plus /></el-icon>
-        {{ $t('testcase.newCase') }}
-      </el-button>
-    </div>
-
     <div class="card-container">
       <div class="filter-bar">
-        <el-row :gutter="20">
-          <el-col :span="5">
-            <el-input
-              v-model="searchText"
-              :placeholder="$t('testcase.searchPlaceholder')"
-              clearable
-              @input="handleSearch"
-            >
-              <template #prefix>
-                <el-icon><Search /></el-icon>
-              </template>
-            </el-input>
-          </el-col>
-          <el-col :span="4">
-            <el-select v-model="projectFilter" :placeholder="$t('testcase.relatedProject')" clearable @change="handleFilter">
-              <el-option
-                v-for="project in projects"
-                :key="project.id"
-                :label="project.name"
-                :value="project.id"
-              />
-            </el-select>
-          </el-col>
-          <el-col :span="3">
-            <el-select v-model="priorityFilter" :placeholder="$t('testcase.priorityFilter')" clearable @change="handleFilter">
-              <el-option :label="$t('testcase.low')" value="low" />
-              <el-option :label="$t('testcase.medium')" value="medium" />
-              <el-option :label="$t('testcase.high')" value="high" />
-              <el-option :label="$t('testcase.critical')" value="critical" />
-            </el-select>
-          </el-col>
-        </el-row>
+        <div class="filter-bar__fields">
+          <el-row :gutter="20">
+            <el-col :span="5">
+              <el-input
+                v-model="searchText"
+                :placeholder="$t('testcase.searchPlaceholder')"
+                clearable
+                @input="handleSearch"
+              >
+                <template #prefix>
+                  <el-icon><Search /></el-icon>
+                </template>
+              </el-input>
+            </el-col>
+            <el-col :span="4">
+              <el-select v-model="projectFilter" :placeholder="$t('testcase.relatedProject')" clearable @change="handleFilter">
+                <el-option
+                  v-for="project in projects"
+                  :key="project.id"
+                  :label="project.name"
+                  :value="project.id"
+                />
+              </el-select>
+            </el-col>
+            <el-col :span="3">
+              <el-select v-model="priorityFilter" :placeholder="$t('testcase.priorityFilter')" clearable @change="handleFilter">
+                <el-option :label="$t('testcase.low')" value="low" />
+                <el-option :label="$t('testcase.medium')" value="medium" />
+                <el-option :label="$t('testcase.high')" value="high" />
+                <el-option :label="$t('testcase.critical')" value="critical" />
+              </el-select>
+            </el-col>
+          </el-row>
+        </div>
+        <div class="filter-bar__actions">
+          <el-button
+            v-if="selectedTestCases.length > 0"
+            type="danger"
+            @click="batchDeleteTestCases"
+            :disabled="isDeleting">
+            <el-icon><Delete /></el-icon>
+            {{ $t('testcase.batchDelete') }} ({{ selectedTestCases.length }})
+          </el-button>
+          <el-button type="success" @click="exportToExcel">
+            <el-icon><Download /></el-icon>
+            {{ $t('testcase.exportExcel') }}
+          </el-button>
+          <el-button type="primary" @click="$router.push('/ai-generation/testcases/create')">
+            <el-icon><Plus /></el-icon>
+            {{ $t('testcase.newCase') }}
+          </el-button>
+        </div>
       </div>
       
       <div class="table-container">
@@ -518,21 +518,17 @@ onMounted(() => {
   flex-direction: column;
   flex: 1;
   overflow: hidden;
-  background: #fff;
-  border-radius: 4px;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  /* appearance styled globally in global.scss */
 }
 
 .filter-bar {
-  padding: 20px;
-  border-bottom: 1px solid #ebeef5;
+  padding: 0 0 16px !important;
   flex-shrink: 0;
 }
 
 .table-container {
   flex: 1;
   overflow: hidden;
-  padding: 0 20px;
   
   :deep(.el-table) {
     height: 100% !important;

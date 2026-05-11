@@ -1,14 +1,15 @@
 <template>
-  <div class="page-object-manager">
-    <h1 class="page-title">{{ $t('uiAutomation.pageObject.title') }}</h1>
-    <div style="margin-bottom: 20px;" class="header-actions">
-      <el-select v-model="projectId" :placeholder="$t('uiAutomation.common.selectProject')" style="width: 200px; margin-right: 15px" @change="onProjectChange">
-        <el-option v-for="project in projects" :key="project.id" :label="project.name" :value="project.id" />
-      </el-select>
-      <el-button type="primary" @click="showCreateDialog = true">
-        <el-icon><Plus /></el-icon>
-        {{ $t('uiAutomation.pageObject.newPageObject') }}
-      </el-button>
+  <div class="page-object-manager page-container">
+    <div class="card-container">
+      <div class="card-toolbar">
+        <el-select v-model="projectId" :placeholder="$t('uiAutomation.common.selectProject')" style="width: 200px" @change="onProjectChange">
+          <el-option v-for="project in projects" :key="project.id" :label="project.name" :value="project.id" />
+        </el-select>
+        <el-button type="primary" @click="showCreateDialog = true">
+          <el-icon><Plus /></el-icon>
+          {{ $t('uiAutomation.pageObject.newPageObject') }}
+        </el-button>
+      </div>
     </div>
 
     <div class="main-content">

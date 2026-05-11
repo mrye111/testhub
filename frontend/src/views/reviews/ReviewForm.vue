@@ -1,11 +1,12 @@
 <template>
   <div class="page-container">
-    <div style="margin-bottom: 20px;">
-      <el-button @click="$router.back()">{{ $t('reviewForm.back') }}</el-button>
-      <el-button type="primary" @click="saveReview" :loading="saving">{{ $t('reviewForm.save') }}</el-button>
-    </div>
+    <div class="card-container">
+      <div class="card-toolbar">
+        <el-button @click="$router.back()">{{ $t('reviewForm.back') }}</el-button>
+        <el-button type="primary" :loading="saving" @click="saveReview">{{ $t('reviewForm.save') }}</el-button>
+      </div>
 
-    <div class="form-container">
+      <div class="form-container">
       <el-form :model="form" :rules="rules" ref="formRef" label-width="120px">
         <el-row :gutter="24">
           <el-col :span="12">
@@ -125,6 +126,7 @@
           </el-select>
         </el-form-item>
       </el-form>
+      </div>
     </div>
 
     <!-- 用例选择对话框 -->
@@ -528,6 +530,13 @@ onMounted(async () => {
 </script>
 
 <style lang="scss" scoped>
+.page-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
 .testcase-selector {
   .search-bar {
     display: flex;

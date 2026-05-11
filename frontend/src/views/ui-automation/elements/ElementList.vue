@@ -1,42 +1,44 @@
 <template>
   <div class="page-container">
-    <h1 class="page-title">{{ $t('uiAutomation.element.title') }}</h1>
-    <div style="margin-bottom: 20px; display: flex; align-items: center;">
-      <el-select v-model="projectId" :placeholder="$t('uiAutomation.common.selectProject')" style="width: 200px; margin-right: 15px" @change="onProjectChange">
-        <el-option v-for="project in projects" :key="project.id" :label="project.name" :value="project.id" />
-      </el-select>
-      <el-button type="primary" @click="handleShowCreateDialog">
-        <el-icon><Plus /></el-icon>
-        {{ $t('uiAutomation.element.newElement') }}
-      </el-button>
-    </div>
-
     <div class="card-container">
       <div class="filter-bar">
-        <el-row :gutter="20">
-          <el-col :span="6">
-            <el-input
-              v-model="searchText"
-              :placeholder="$t('uiAutomation.element.searchPlaceholder')"
-              clearable
-              @input="handleSearch"
-            >
-              <template #prefix>
-                <el-icon><Search /></el-icon>
-              </template>
-            </el-input>
-          </el-col>
-          <el-col :span="4">
-            <el-select v-model="strategyFilter" :placeholder="$t('uiAutomation.element.strategyFilter')" clearable @change="handleFilter">
-              <el-option v-for="strategy in strategies" :key="strategy.id" :label="strategy.name" :value="strategy.id" />
-            </el-select>
-          </el-col>
-          <el-col :span="4">
-            <el-select v-model="pageFilter" :placeholder="$t('uiAutomation.element.pageFilter')" clearable @change="handleFilter">
-              <el-option v-for="page in pages" :key="page" :label="page" :value="page" />
-            </el-select>
-          </el-col>
-        </el-row>
+        <div class="filter-bar__fields">
+          <el-row :gutter="20">
+            <el-col :span="5">
+              <el-select v-model="projectId" :placeholder="$t('uiAutomation.common.selectProject')" style="width: 100%" @change="onProjectChange">
+                <el-option v-for="project in projects" :key="project.id" :label="project.name" :value="project.id" />
+              </el-select>
+            </el-col>
+            <el-col :span="5">
+              <el-input
+                v-model="searchText"
+                :placeholder="$t('uiAutomation.element.searchPlaceholder')"
+                clearable
+                @input="handleSearch"
+              >
+                <template #prefix>
+                  <el-icon><Search /></el-icon>
+                </template>
+              </el-input>
+            </el-col>
+            <el-col :span="4">
+              <el-select v-model="strategyFilter" :placeholder="$t('uiAutomation.element.strategyFilter')" clearable @change="handleFilter">
+                <el-option v-for="strategy in strategies" :key="strategy.id" :label="strategy.name" :value="strategy.id" />
+              </el-select>
+            </el-col>
+            <el-col :span="4">
+              <el-select v-model="pageFilter" :placeholder="$t('uiAutomation.element.pageFilter')" clearable @change="handleFilter">
+                <el-option v-for="page in pages" :key="page" :label="page" :value="page" />
+              </el-select>
+            </el-col>
+          </el-row>
+        </div>
+        <div class="filter-bar__actions">
+          <el-button type="primary" @click="handleShowCreateDialog">
+            <el-icon><Plus /></el-icon>
+            {{ $t('uiAutomation.element.newElement') }}
+          </el-button>
+        </div>
       </div>
       
       <el-table :data="elements" v-loading="loading" style="width: 100%">
@@ -618,14 +620,11 @@ onMounted(async () => {
 }
 
 .card-container {
-  background-color: #fff;
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  /* styled globally */
 }
 
 .filter-bar {
-  margin-bottom: 20px;
+  /* styled globally */
 }
 
 .pagination-container {

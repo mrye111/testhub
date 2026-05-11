@@ -1,15 +1,16 @@
 <template>
-  <div class="scheduled-tasks">
-    <div class="header">
-      <h3>{{ $t('apiTesting.scheduledTask.title') }}</h3>
-      <el-button type="primary" @click="handleCreateClick">
-        <el-icon><Plus /></el-icon>
-        {{ $t('apiTesting.scheduledTask.createTask') }}
-      </el-button>
-    </div>
+  <div class="scheduled-tasks page-container">
+    <div class="card-container">
+      <div class="card-toolbar">
+        <h3 style="margin: 0;">{{ $t('apiTesting.scheduledTask.title') }}</h3>
+        <el-button type="primary" @click="handleCreateClick" style="margin-left: auto;">
+          <el-icon><Plus /></el-icon>
+          {{ $t('apiTesting.scheduledTask.createTask') }}
+        </el-button>
+      </div>
 
-    <!-- 筛选条件 -->
-    <div class="filters">
+      <!-- 筛选条件 -->
+      <div class="filters">
       <el-row :gutter="20">
         <el-col :span="6">
           <el-select v-model="filters.task_type" :placeholder="$t('apiTesting.scheduledTask.taskType')" clearable>
@@ -109,7 +110,7 @@
     </div>
 
     <!-- 分页 -->
-    <div class="pagination">
+    <div class="pagination-container">
       <el-pagination
         v-model:current-page="pagination.current"
         v-model:page-size="pagination.size"
@@ -119,6 +120,7 @@
         @size-change="loadTasks"
         @current-change="loadTasks"
       />
+    </div>
     </div>
 
     <!-- 创建/编辑对话框 -->

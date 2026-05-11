@@ -1,52 +1,53 @@
 <template>
   <div class="page-container">
-    <div style="margin-bottom: 20px;">
-      <el-button
-        v-if="selectedVersions.length > 0"
-        type="danger"
-        @click="batchDeleteVersions"
-        :disabled="isDeleting">
-        <el-icon><Delete /></el-icon>
-        {{ $t('version.batchDelete') }} ({{ selectedVersions.length }})
-      </el-button>
-      <el-button type="primary" @click="createVersion">
-        <el-icon><Plus /></el-icon>
-        {{ $t('version.newVersion') }}
-      </el-button>
-    </div>
-
     <div class="card-container">
       <div class="filter-bar">
-        <el-row :gutter="20">
-          <el-col :span="6">
-            <el-input
-              v-model="searchText"
-              :placeholder="$t('version.searchPlaceholder')"
-              clearable
-              @input="handleSearch"
-            >
-              <template #prefix>
-                <el-icon><Search /></el-icon>
-              </template>
-            </el-input>
-          </el-col>
-          <el-col :span="4">
-            <el-select v-model="projectFilter" :placeholder="$t('version.relatedProject')" clearable @change="handleFilter">
-              <el-option
-                v-for="project in projects"
-                :key="project.id"
-                :label="project.name"
-                :value="project.id"
-              />
-            </el-select>
-          </el-col>
-          <el-col :span="3">
-            <el-select v-model="baselineFilter" :placeholder="$t('version.versionType')" clearable @change="handleFilter">
-              <el-option :label="$t('version.baselineVersion')" :value="true" />
-              <el-option :label="$t('version.normalVersion')" :value="false" />
-            </el-select>
-          </el-col>
-        </el-row>
+        <div class="filter-bar__fields">
+          <el-row :gutter="20">
+            <el-col :span="6">
+              <el-input
+                v-model="searchText"
+                :placeholder="$t('version.searchPlaceholder')"
+                clearable
+                @input="handleSearch"
+              >
+                <template #prefix>
+                  <el-icon><Search /></el-icon>
+                </template>
+              </el-input>
+            </el-col>
+            <el-col :span="4">
+              <el-select v-model="projectFilter" :placeholder="$t('version.relatedProject')" clearable @change="handleFilter">
+                <el-option
+                  v-for="project in projects"
+                  :key="project.id"
+                  :label="project.name"
+                  :value="project.id"
+                />
+              </el-select>
+            </el-col>
+            <el-col :span="3">
+              <el-select v-model="baselineFilter" :placeholder="$t('version.versionType')" clearable @change="handleFilter">
+                <el-option :label="$t('version.baselineVersion')" :value="true" />
+                <el-option :label="$t('version.normalVersion')" :value="false" />
+              </el-select>
+            </el-col>
+          </el-row>
+        </div>
+        <div class="filter-bar__actions">
+          <el-button
+            v-if="selectedVersions.length > 0"
+            type="danger"
+            @click="batchDeleteVersions"
+            :disabled="isDeleting">
+            <el-icon><Delete /></el-icon>
+            {{ $t('version.batchDelete') }} ({{ selectedVersions.length }})
+          </el-button>
+          <el-button type="primary" @click="createVersion">
+            <el-icon><Plus /></el-icon>
+            {{ $t('version.newVersion') }}
+          </el-button>
+        </div>
       </div>
       
       <el-table

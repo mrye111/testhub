@@ -1,15 +1,13 @@
 <template>
   <div class="page-container">
-    <h1 class="page-title">{{ $t('uiAutomation.execution.title') }}</h1>
-    <div style="margin-bottom: 20px;">
-      <el-select v-model="projectId" :placeholder="$t('uiAutomation.common.selectProject')" style="width: 200px; margin-right: 15px" @change="onProjectChange">
-        <el-option v-for="project in projects" :key="project.id" :label="project.name" :value="project.id" />
-      </el-select>
-    </div>
-
     <div class="card-container">
       <div class="filter-bar">
         <el-form :inline="true" :model="queryParams" class="demo-form-inline">
+          <el-form-item :label="$t('uiAutomation.common.selectProject')">
+            <el-select v-model="projectId" :placeholder="$t('uiAutomation.common.selectProject')" style="width: 200px" @change="onProjectChange">
+              <el-option v-for="project in projects" :key="project.id" :label="project.name" :value="project.id" />
+            </el-select>
+          </el-form-item>
           <el-form-item :label="$t('uiAutomation.common.search')">
             <el-input
               v-model="queryParams.search"
@@ -645,14 +643,11 @@ onMounted(async () => {
 }
 
 .card-container {
-  background-color: #fff;
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  /* styled globally */
 }
 
 .filter-bar {
-  margin-bottom: 20px;
+  /* styled globally */
 }
 
 .pagination-container {

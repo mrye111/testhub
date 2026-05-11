@@ -253,14 +253,11 @@ onMounted(() => {
 }
 
 .card-container {
-  background-color: #fff;
-  border-radius: 4px;
-  padding: 20px;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  /* styled globally */
 }
 
 .filter-bar {
-  margin-bottom: 20px;
+  /* styled globally */
 }
 
 .pagination-container {

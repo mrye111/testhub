@@ -1,20 +1,20 @@
 <template>
-  <div class="ui-flow-case-list">
-    <!-- 页面标题 -->
-    <div style="margin-bottom: 20px;">
-      <el-button
-        type="primary"
-        size="small"
-        :icon="Refresh"
-        :loading="loading"
-        @click="loadTestCases"
-      >
-        刷新
-      </el-button>
-    </div>
-
+  <div class="ui-flow-case-list page-container">
     <!-- 设备和应用选择 -->
     <el-card class="device-card">
+      <template #header>
+        <div class="card-toolbar">
+          <el-button
+            type="primary"
+            size="small"
+            :icon="Refresh"
+            :loading="loading"
+            @click="loadTestCases"
+          >
+            刷新
+          </el-button>
+        </div>
+      </template>
       <el-form :model="form" label-width="100px" size="small">
         <el-row :gutter="16">
           <el-col :span="5">
@@ -894,16 +894,8 @@ onBeforeUnmount(() => {
   }
 }
 
-// 表格样式优化
+// 表格样式优化（表头背景色由全局 global.scss 统一管理）
 :deep(.el-table) {
-  .el-table__header {
-    th {
-      background-color: #fafafa;
-      color: #606266;
-      font-weight: 600;
-    }
-  }
-
   .el-table__body {
     tr:hover {
       background-color: #f5f7fa;

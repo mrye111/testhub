@@ -1,12 +1,10 @@
 <template>
   <div class="page-container">
-    <h1 class="page-title">{{ $t('testcase.detail') }}</h1>
-    <div style="margin-bottom: 20px;">
-      <el-button @click="$router.back()">{{ $t('common.back') }}</el-button>
-      <el-button type="primary" @click="editTestCase">{{ $t('common.edit') }}</el-button>
-    </div>
-
     <div class="card-container" v-if="testcase">
+      <div class="card-toolbar">
+        <el-button @click="$router.back()">{{ $t('common.back') }}</el-button>
+        <el-button type="primary" @click="editTestCase">{{ $t('common.edit') }}</el-button>
+      </div>
       <el-descriptions :column="2" border>
         <el-descriptions-item :label="$t('testcase.caseTitle')" :span="2">{{ testcase.title }}</el-descriptions-item>
         <el-descriptions-item :label="$t('testcase.priority')">

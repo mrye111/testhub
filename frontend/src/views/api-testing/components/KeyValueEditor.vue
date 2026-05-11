@@ -634,9 +634,8 @@ defineExpose({
 }
 
 :deep(.el-table th) {
-  background-color: #f5f7fa;
+  /* 背景色由全局 global.scss 统一管理 */
   font-weight: 600;
-  color: #303133;
 }
 
 :deep(.el-table td) {

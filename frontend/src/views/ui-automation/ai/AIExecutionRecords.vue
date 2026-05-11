@@ -1,19 +1,18 @@
 <template>
   <div class="page-container">
-    <h1 class="page-title">{{ $t('uiAutomation.ai.executionRecords.title') }}</h1>
-    <div style="margin-bottom: 20px;" class="header-actions">
-      <el-button
-        type="danger"
-        :disabled="selectedRecords.length === 0"
-        @click="batchDeleteRecords"
-        :loading="isDeleting"
-      >
-        <el-icon><Delete /></el-icon>
-        {{ $t('uiAutomation.common.batchDelete') }}
-      </el-button>
-    </div>
-
     <div class="card-container">
+      <div class="card-toolbar">
+        <el-button
+          type="danger"
+          :disabled="selectedRecords.length === 0"
+          @click="batchDeleteRecords"
+          :loading="isDeleting"
+        >
+          <el-icon><Delete /></el-icon>
+          {{ $t('uiAutomation.common.batchDelete') }}
+        </el-button>
+      </div>
+
       <el-table
         :data="records"
         v-loading="loading"
@@ -342,10 +341,7 @@ onUnmounted(() => {
 }
 
 .card-container {
-  background-color: #fff;
-  border-radius: 4px;
-  padding: 20px;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  /* styled globally */
 }
 
 .pagination-container {

@@ -1,48 +1,50 @@
 <template>
   <div class="page-container">
-    <div style="margin-bottom: 20px;">
-      <el-button type="primary" @click="createReview">
-        <el-icon><Plus /></el-icon>
-        {{ $t('reviewList.createReview') }}
-      </el-button>
-    </div>
+    <div class="card-container">
+      <div class="filter-bar">
+        <div class="filter-bar__fields">
+          <el-form :inline="true" :model="filters" class="filter-form">
+            <el-form-item :label="$t('reviewList.project')">
+              <el-select v-model="filters.project" :placeholder="$t('reviewList.selectProject')" clearable @change="fetchReviews">
+                <el-option
+                  v-for="project in projects"
+                  :key="project.id"
+                  :label="project.name"
+                  :value="project.id"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item :label="$t('reviewList.status')">
+              <el-select v-model="filters.status" :placeholder="$t('reviewList.selectStatus')" clearable @change="fetchReviews">
+                <el-option :label="$t('reviewList.statusPending')" value="pending" />
+                <el-option :label="$t('reviewList.statusInProgress')" value="in_progress" />
+                <el-option :label="$t('reviewList.statusApproved')" value="approved" />
+                <el-option :label="$t('reviewList.statusRejected')" value="rejected" />
+                <el-option :label="$t('reviewList.statusCancelled')" value="cancelled" />
+              </el-select>
+            </el-form-item>
+            <el-form-item :label="$t('reviewList.reviewer')">
+              <el-select v-model="filters.reviewer" :placeholder="$t('reviewList.selectReviewer')" clearable @change="fetchReviews">
+                <el-option
+                  v-for="user in users"
+                  :key="user.id"
+                  :label="user.username"
+                  :value="user.id"
+                />
+              </el-select>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="filter-bar__actions">
+          <el-button type="primary" @click="createReview">
+            <el-icon><Plus /></el-icon>
+            {{ $t('reviewList.createReview') }}
+          </el-button>
+        </div>
+      </div>
 
-    <div class="filter-bar">
-      <el-form :inline="true" :model="filters" class="filter-form">
-        <el-form-item :label="$t('reviewList.project')">
-          <el-select v-model="filters.project" :placeholder="$t('reviewList.selectProject')" clearable @change="fetchReviews">
-            <el-option
-              v-for="project in projects"
-              :key="project.id"
-              :label="project.name"
-              :value="project.id"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('reviewList.status')">
-          <el-select v-model="filters.status" :placeholder="$t('reviewList.selectStatus')" clearable @change="fetchReviews">
-            <el-option :label="$t('reviewList.statusPending')" value="pending" />
-            <el-option :label="$t('reviewList.statusInProgress')" value="in_progress" />
-            <el-option :label="$t('reviewList.statusApproved')" value="approved" />
-            <el-option :label="$t('reviewList.statusRejected')" value="rejected" />
-            <el-option :label="$t('reviewList.statusCancelled')" value="cancelled" />
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('reviewList.reviewer')">
-          <el-select v-model="filters.reviewer" :placeholder="$t('reviewList.selectReviewer')" clearable @change="fetchReviews">
-            <el-option
-              v-for="user in users"
-              :key="user.id"
-              :label="user.username"
-              :value="user.id"
-            />
-          </el-select>
-        </el-form-item>
-      </el-form>
-    </div>
-
-    <div class="table-container">
-      <el-table :data="reviews" v-loading="loading" stripe>
+      <div class="table-container">
+        <el-table :data="reviews" v-loading="loading" stripe>
         <el-table-column prop="title" :label="$t('reviewList.reviewTitle')" min-width="200" show-overflow-tooltip />
         <el-table-column :label="$t('reviewList.reviewProject')" width="200">
           <template #default="{ row }">
@@ -87,34 +89,45 @@
             {{ formatDate(row.created_at) }}
           </template>
         </el-table-column>
-        <el-table-column :label="$t('reviewList.actions')" width="200" fixed="right">
+        <el-table-column :label="$t('reviewList.actions')" width="360" fixed="right">
           <template #default="{ row }">
-            <el-button link type="primary" @click="viewReview(row.id)">{{ $t('reviewList.detail') }}</el-button>
-            <el-button v-if="canReview(row)" link type="success" @click="submitReview(row)">{{ $t('reviewList.review') }}</el-button>
-            <el-button v-if="canEdit(row)" link type="warning" @click="editReview(row.id)">{{ $t('reviewList.edit') }}</el-button>
-            <el-popconfirm
-              v-if="canDelete(row)"
-              :title="$t('reviewList.deleteConfirm')"
-              @confirm="deleteReview(row.id)"
-            >
-              <template #reference>
-                <el-button link type="danger">{{ $t('reviewList.delete') }}</el-button>
-              </template>
-            </el-popconfirm>
+            <div class="action-cell">
+              <el-button size="small" type="primary" @click="viewReview(row.id)">
+                {{ $t('reviewList.detail') }}
+              </el-button>
+              <el-button size="small" v-if="canReview(row)" type="success" @click="submitReview(row)">
+                {{ $t('reviewList.review') }}
+              </el-button>
+              <el-button size="small" v-if="canEdit(row)" type="warning" @click="editReview(row.id)">
+                {{ $t('reviewList.edit') }}
+              </el-button>
+              <el-popconfirm
+                v-if="canDelete(row)"
+                :title="$t('reviewList.deleteConfirm')"
+                @confirm="deleteReview(row.id)"
+              >
+                <template #reference>
+                  <el-button size="small" type="danger">
+                    {{ $t('reviewList.delete') }}
+                  </el-button>
+                </template>
+              </el-popconfirm>
+            </div>
           </template>
         </el-table-column>
       </el-table>
 
-      <div class="pagination-container">
-        <el-pagination
-          v-model:current-page="pagination.page"
-          v-model:page-size="pagination.size"
-          :total="pagination.total"
-          :page-sizes="[10, 20, 50, 100]"
-          layout="total, sizes, prev, pager, next, jumper"
-          @size-change="fetchReviews"
-          @current-change="fetchReviews"
-        />
+        <div class="pagination-container">
+          <el-pagination
+            v-model:current-page="pagination.page"
+            v-model:page-size="pagination.size"
+            :total="pagination.total"
+            :page-sizes="[10, 20, 50, 100]"
+            layout="total, sizes, prev, pager, next, jumper"
+            @size-change="fetchReviews"
+            @current-change="fetchReviews"
+          />
+        </div>
       </div>
     </div>
 
@@ -331,10 +344,24 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+.page-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
 .priority-tag {
   &.low { color: #67c23a; }
   &.medium { color: #e6a23c; }
   &.high { color: #f56c6c; }
   &.urgent { color: #f56c6c; font-weight: bold; }
+}
+
+.action-cell {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
 }
 </style>

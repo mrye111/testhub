@@ -1,25 +1,28 @@
 <template>
   <div class="page-container">
-    <div style="margin-bottom: 20px;">
-      <el-button type="primary" @click="createTemplate">
-        <el-icon><Plus /></el-icon>
-        {{ $t('reviewTemplate.createTemplate') }}
-      </el-button>
-    </div>
-
-    <div class="filter-bar">
-      <el-form :inline="true" :model="filters" class="filter-form">
-        <el-form-item :label="$t('reviewTemplate.project')">
-          <el-select v-model="filters.project" :placeholder="$t('reviewTemplate.selectProject')" clearable @change="fetchTemplates">
-            <el-option
-              v-for="project in projects"
-              :key="project.id"
-              :label="project.name"
-              :value="project.id"
-            />
-          </el-select>
-        </el-form-item>
-      </el-form>
+    <div class="card-container">
+      <div class="filter-bar">
+        <div class="filter-bar__fields">
+          <el-form :inline="true" :model="filters" class="filter-form">
+            <el-form-item :label="$t('reviewTemplate.project')">
+              <el-select v-model="filters.project" :placeholder="$t('reviewTemplate.selectProject')" clearable @change="fetchTemplates">
+                <el-option
+                  v-for="project in projects"
+                  :key="project.id"
+                  :label="project.name"
+                  :value="project.id"
+                />
+              </el-select>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="filter-bar__actions">
+          <el-button type="primary" @click="createTemplate">
+            <el-icon><Plus /></el-icon>
+            {{ $t('reviewTemplate.createTemplate') }}
+          </el-button>
+        </div>
+      </div>
     </div>
 
     <div class="templates-grid">
@@ -33,14 +36,14 @@
           <div class="card-header">
             <span class="template-name">{{ template.name }}</span>
             <div class="card-actions">
-              <el-button link type="primary" @click="useTemplate(template)">{{ $t('reviewTemplate.useTemplate') }}</el-button>
-              <el-button link type="warning" @click="editTemplate(template)">{{ $t('reviewTemplate.edit') }}</el-button>
+              <el-button size="small" type="primary" @click="useTemplate(template)">{{ $t('reviewTemplate.useTemplate') }}</el-button>
+              <el-button size="small" type="warning" @click="editTemplate(template)">{{ $t('reviewTemplate.edit') }}</el-button>
               <el-popconfirm
                 :title="$t('reviewTemplate.deleteConfirm')"
                 @confirm="deleteTemplate(template.id)"
               >
                 <template #reference>
-                  <el-button link type="danger">{{ $t('reviewTemplate.delete') }}</el-button>
+                  <el-button size="small" type="danger">{{ $t('reviewTemplate.delete') }}</el-button>
                 </template>
               </el-popconfirm>
             </div>
@@ -159,8 +162,9 @@
               <el-button
                 type="danger"
                 size="small"
-                @click="removeChecklistItem(index)"
                 :icon="Delete"
+                circle
+                @click="removeChecklistItem(index)"
               />
             </div>
             <el-button type="primary" size="small" @click="addChecklistItem">
@@ -188,7 +192,7 @@
 
       <template #footer>
         <el-button @click="templateDialogVisible = false">{{ $t('reviewTemplate.cancel') }}</el-button>
-        <el-button type="primary" @click="saveTemplate" :loading="saving">{{ $t('reviewTemplate.save') }}</el-button>
+        <el-button type="primary" :loading="saving" @click="saveTemplate">{{ $t('reviewTemplate.save') }}</el-button>
       </template>
     </el-dialog>
   </div>
@@ -387,6 +391,13 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+.page-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
 .templates-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));

@@ -1,32 +1,34 @@
 <template>
   <div class="page-container">
-    <h1 class="page-title">{{ $t('uiAutomation.suite.title') }}</h1>
-    <div style="margin-bottom: 20px;">
-      <el-select v-model="projectId" :placeholder="$t('uiAutomation.common.selectProject')" style="width: 200px; margin-right: 15px" @change="onProjectChange">
-        <el-option v-for="project in projects" :key="project.id" :label="project.name" :value="project.id" />
-      </el-select>
-      <el-button type="primary" @click="handleNewSuite">
-        <el-icon><Plus /></el-icon>
-        {{ $t('uiAutomation.suite.newSuite') }}
-      </el-button>
-    </div>
-
     <div class="card-container">
       <div class="filter-bar">
-        <el-row :gutter="20">
-          <el-col :span="6">
-            <el-input
-              v-model="searchText"
-              :placeholder="$t('uiAutomation.suite.searchPlaceholder')"
-              clearable
-              @input="handleSearch"
-            >
-              <template #prefix>
-                <el-icon><Search /></el-icon>
-              </template>
-            </el-input>
-          </el-col>
-        </el-row>
+        <div class="filter-bar__fields">
+          <el-row :gutter="20">
+            <el-col :span="6">
+              <el-select v-model="projectId" :placeholder="$t('uiAutomation.common.selectProject')" style="width: 100%" @change="onProjectChange">
+                <el-option v-for="project in projects" :key="project.id" :label="project.name" :value="project.id" />
+              </el-select>
+            </el-col>
+            <el-col :span="6">
+              <el-input
+                v-model="searchText"
+                :placeholder="$t('uiAutomation.suite.searchPlaceholder')"
+                clearable
+                @input="handleSearch"
+              >
+                <template #prefix>
+                  <el-icon><Search /></el-icon>
+                </template>
+              </el-input>
+            </el-col>
+          </el-row>
+        </div>
+        <div class="filter-bar__actions">
+          <el-button type="primary" @click="handleNewSuite">
+            <el-icon><Plus /></el-icon>
+            {{ $t('uiAutomation.suite.newSuite') }}
+          </el-button>
+        </div>
       </div>
 
       <el-table :data="suites" v-loading="loading" style="width: 100%">
@@ -786,13 +788,11 @@ const handleNewSuite = async () => {
 }
 
 .card-container {
-  background: white;
-  padding: 20px;
-  border-radius: 4px;
+  /* styled globally in global.scss .app-shell .card-container */
 }
 
 .filter-bar {
-  margin-bottom: 20px;
+  /* styled globally in global.scss */
 }
 
 .pagination-container {

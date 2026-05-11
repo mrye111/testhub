@@ -1,7 +1,7 @@
 <template>
-  <div class="test-report">
+  <div class="page-container test-report">
     <!-- Filter bar -->
-    <div class="filter-bar">
+    <div class="card-container filter-bar">
       <div class="left-filters">
         <el-select v-model="filters.project" :placeholder="$t('report.selectProject')" clearable @change="handleFilterChange" style="width: 200px">
           <el-option v-for="item in projects" :key="item.id" :label="item.name" :value="item.id"></el-option>
@@ -385,20 +385,13 @@ onUnmounted(() => {
 
 <style scoped>
 .test-report {
-  padding: 20px;
-  background-color: #f5f7fa;
-  min-height: 100vh;
+  /* page-container handles padding via global.scss */
 }
 
 .filter-bar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
-  background: white;
-  padding: 16px;
-  border-radius: 8px;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.05);
 }
 
 .left-filters {
@@ -414,19 +407,21 @@ onUnmounted(() => {
 }
 
 .card {
-  background: white;
-  border-radius: 8px;
   padding: 20px;
   display: flex;
   align-items: center;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.05);
-  transition: all 0.3s;
   position: relative;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 8px 32px rgba(0, 0, 0, 0.04);
+  backdrop-filter: blur(20px);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 16px 48px rgba(0, 0, 0, 0.06);
 }
 
 .card-icon {
@@ -483,12 +478,20 @@ onUnmounted(() => {
 }
 
 .chart-card {
-  background: white;
-  border-radius: 8px;
   padding: 20px;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 8px 32px rgba(0, 0, 0, 0.04);
+  backdrop-filter: blur(20px);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.chart-card:hover {
+  transform: translateY(-4px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 16px 48px rgba(0, 0, 0, 0.06);
 }
 
 .chart-header {

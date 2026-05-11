@@ -1,13 +1,12 @@
 <template>
   <div class="page-container">
-    <div style="margin-bottom: 20px;">
-      <el-button type="primary" @click="$router.back()">
-        <el-icon><ArrowLeft /></el-icon>
-        {{ $t('common.back') }}
-      </el-button>
-    </div>
-
     <div class="card-container">
+      <div class="card-toolbar">
+        <el-button type="primary" @click="$router.back()">
+          <el-icon><ArrowLeft /></el-icon>
+          {{ $t('common.back') }}
+        </el-button>
+      </div>
       <el-tabs v-model="activeTab">
         <el-tab-pane :label="$t('project.projectInfo')" name="info">
           <div v-if="project">

@@ -1,17 +1,17 @@
 <template>
-  <div class="suite-list">
-    <!-- 页面标题 -->
-    <div style="margin-bottom: 20px;">
-      <el-button type="primary" size="small" :icon="Plus" @click="showCreateDialog">
-        新建套件
-      </el-button>
-      <el-button size="small" :icon="Refresh" :loading="loading" @click="loadSuites">
-        刷新
-      </el-button>
-    </div>
-
+  <div class="suite-list page-container">
     <!-- 设备和应用选择 -->
     <el-card class="config-card">
+      <template #header>
+        <div class="card-toolbar">
+          <el-button type="primary" size="small" :icon="Plus" @click="showCreateDialog">
+            新建套件
+          </el-button>
+          <el-button size="small" :icon="Refresh" :loading="loading" @click="loadSuites">
+            刷新
+          </el-button>
+        </div>
+      </template>
       <el-form :model="runConfig" label-width="100px" size="small">
         <el-row :gutter="16">
           <el-col :span="5">
@@ -814,12 +814,5 @@ onMounted(() => {
   }
 }
 
-// 表格样式
-:deep(.el-table) {
-  .el-table__header th {
-    background-color: #fafafa;
-    color: #606266;
-    font-weight: 600;
-  }
-}
+// 表格样式（表头背景色由全局 global.scss 统一管理）
 </style>

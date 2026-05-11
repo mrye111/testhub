@@ -1,16 +1,16 @@
 <template>
-  <div class="project-management">
-    <div class="header">
-      <h2>{{ $t('apiTesting.project.title') }}</h2>
-      <el-button type="primary" @click="showCreateDialog = true">
-        <el-icon><Plus /></el-icon>
-        {{ $t('apiTesting.project.createProject') }}
-      </el-button>
-    </div>
+  <div class="project-management page-container">
+    <div class="card-container">
+      <div class="card-toolbar">
+        <h2 style="margin: 0;">{{ $t('apiTesting.project.title') }}</h2>
+        <el-button type="primary" @click="showCreateDialog = true" style="margin-left: auto;">
+          <el-icon><Plus /></el-icon>
+          {{ $t('apiTesting.project.createProject') }}
+        </el-button>
+      </div>
 
-
-    <!-- 项目列表 -->
-    <el-table :data="projects" v-loading="loading" style="width: 100%">
+      <!-- 项目列表 -->
+      <el-table :data="projects" v-loading="loading" style="width: 100%">
       <el-table-column prop="name" :label="$t('apiTesting.project.projectName')" min-width="200" />
       <el-table-column prop="project_type" :label="$t('apiTesting.project.projectType')" width="120">
         <template #default="scope">
@@ -54,8 +54,9 @@
       layout="total, sizes, prev, pager, next, jumper"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-      class="pagination"
+      class="pagination-container"
     />
+    </div>
 
     <!-- 新建/编辑项目对话框 -->
     <el-dialog

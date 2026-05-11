@@ -192,20 +192,27 @@ body {
   }
 }
 
-/* ===== 业务菜单页：图 1 风格玻璃拟态统一皮肤 ===== */
+/* ===== Glass Morphism Theme ===== */
 .app-shell {
-  --glass-panel: rgba(236, 244, 253, 0.44);
-  --glass-panel-strong: rgba(244, 249, 255, 0.58);
-  --glass-line: rgba(117, 141, 188, 0.22);
-  --glass-text: #0b0d12;
-  --glass-muted: rgba(39, 51, 86, 0.68);
-  --glass-blue: #5d8cff;
-  --glass-blue-2: #67bbff;
-  --glass-black: #0d0905;
-}
-
-.app-shell .content-main {
-  color: var(--glass-text);
+  --glass-cyan: #06b6d4;
+  --glass-cyan-light: #22d3ee;
+  --glass-cyan-dark: #0891b2;
+  --glass-panel: rgba(255, 255, 255, 0.55);
+  --glass-panel-strong: rgba(255, 255, 255, 0.72);
+  --glass-line: rgba(0, 0, 0, 0.06);
+  --glass-text: #111827;
+  --glass-muted: #6b7280;
+  --el-color-primary: #06b6d4;
+  --el-color-primary-light-3: #22d3ee;
+  --el-color-primary-light-5: #67e8f9;
+  --el-color-primary-light-7: #a5f3fc;
+  --el-color-primary-dark-2: #0891b2;
+  --el-color-success: #10b981;
+  --el-color-warning: #f59e0b;
+  --el-color-danger: #ef4444;
+  --el-color-info: #6b7280;
+  --el-border-radius-base: 14px;
+  --el-border-radius-small: 10px;
 }
 
 .app-shell .page-container,
@@ -220,30 +227,6 @@ body {
   min-height: 100%;
 }
 
-.app-shell .page-header {
-  margin: 0 0 22px;
-  padding: 26px 36px;
-  border: 1px solid rgba(255, 255, 255, 0.34);
-  border-radius: 28px;
-  background: var(--glass-panel);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.42);
-  backdrop-filter: blur(22px);
-}
-
-.app-shell .page-header .page-title,
-.app-shell .section-title,
-.app-shell h1,
-.app-shell h2,
-.app-shell h3 {
-  color: var(--glass-text);
-  letter-spacing: 0;
-}
-
-.app-shell .page-header .page-title {
-  font-size: 22px;
-  font-weight: 500;
-}
-
 .app-shell .card-container,
 .app-shell .el-card,
 .app-shell .stat-card,
@@ -252,64 +235,176 @@ body {
 .app-shell .quick-actions,
 .app-shell .config-card,
 .app-shell .info-card {
-  border: 1px solid rgba(255, 255, 255, 0.36) !important;
-  border-radius: 28px !important;
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  border-radius: 24px !important;
   background: var(--glass-panel) !important;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.45),
-    0 20px 52px rgba(82, 103, 148, 0.12) !important;
-  backdrop-filter: blur(24px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 8px 32px rgba(0, 0, 0, 0.04) !important;
+  backdrop-filter: blur(20px);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.app-shell .card-container:hover,
+.app-shell .el-card:hover,
+.app-shell .stat-card:hover,
+.app-shell .feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 16px 48px rgba(0, 0, 0, 0.06) !important;
 }
 
 .app-shell .card-container {
-  padding: 28px 30px;
+  padding: 24px 28px !important;
+  margin-bottom: 20px;
+}
+
+/* Unified inner blocks: filter-bar & table-container inherit the card visual */
+.app-shell .page-container > .filter-bar,
+.app-shell .page-container > .table-container {
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  border-radius: 24px !important;
+  background: var(--glass-panel) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 8px 32px rgba(0, 0, 0, 0.04) !important;
+  backdrop-filter: blur(20px);
+  padding: 20px 24px !important;
+  margin-bottom: 20px !important;
+}
+
+.app-shell .page-container > .filter-bar + .table-container {
+  margin-top: 0 !important;
+}
+
+/* When filter-bar/table-container are nested inside a .card-container, keep them flush */
+.app-shell .card-container > .filter-bar,
+.app-shell .card-container > .table-container {
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none;
+  padding: 0 !important;
+}
+
+.app-shell .card-container > .filter-bar {
+  margin-bottom: 16px !important;
+  padding-bottom: 16px !important;
+  border-bottom: 1px solid var(--glass-line) !important;
+}
+
+/* Filter-bar with inline right-aligned action buttons (search + buttons in one line) */
+.app-shell .filter-bar {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.app-shell .filter-bar__fields {
+  flex: 1;
+  min-width: 0;
+}
+
+.app-shell .filter-bar__actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-left: auto;
+}
+
+/* When a card has only a toolbar row (no fields), keep it compact */
+.app-shell .card-container > .card-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--glass-line);
+}
+
+/* Toolbar-only card (no following siblings): remove bottom divider */
+.app-shell .card-container > .card-toolbar:only-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+/* Unified glass treatment for commonly-used custom card class names across modules */
+.app-shell .page-container .filter-card,
+.app-shell .page-container .stats-card,
+.app-shell .page-container .content-wrapper,
+.app-shell .page-container .testcases-section,
+.app-shell .page-container .result-header,
+.app-shell .page-container .generated-testcases-section,
+.app-shell .page-container .review-feedback-section,
+.app-shell .page-container .final-testcases-section,
+.app-shell .page-container .progress-card,
+.app-shell .page-container .requirement-description-card,
+.app-shell .page-container .batch-actions,
+.app-shell .page-container .testcases-table,
+.app-shell .page-container .test-run-card,
+.app-shell .page-container .output-mode-card,
+.app-shell .page-container .manual-input-card,
+.app-shell .page-container .upload-card,
+.app-shell .page-container .notification-logs-container {
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  border-radius: 24px !important;
+  background: var(--glass-panel) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 8px 32px rgba(0, 0, 0, 0.04) !important;
+  backdrop-filter: blur(20px);
+}
+
+/* Pagination area */
+.app-shell .pagination-container {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 16px;
+  margin-top: 16px;
+  border-top: 1px solid var(--glass-line);
 }
 
 .app-shell .el-card__body {
-  padding: 28px !important;
+  padding: 24px;
 }
 
 .app-shell .el-card__header {
-  border-bottom: 1px solid var(--glass-line) !important;
+  border-bottom: 1px solid var(--glass-line);
   color: var(--glass-text);
-  font-size: 18px;
-  font-weight: 500;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .app-shell .stats-section,
 .app-shell .content-section,
 .app-shell .features-section {
-  margin-bottom: 22px;
+  margin-bottom: 20px;
 }
 
 .app-shell .stat-card {
-  min-height: 132px;
+  min-height: 120px;
 }
 
 .app-shell .stat-content {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 16px;
 }
 
 .app-shell .stat-icon,
 .app-shell .action-icon,
 .app-shell .feature-icon,
 .app-shell .activity-icon {
-  border: 1px solid rgba(255, 255, 255, 0.38);
-  background:
-    linear-gradient(180deg, rgba(247, 251, 255, 0.78), rgba(220, 234, 253, 0.46)) !important;
-  color: #0f1724 !important;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.7),
-    0 12px 28px rgba(91, 122, 188, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.45));
+  color: var(--glass-text);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 8px 24px rgba(0, 0, 0, 0.04);
 }
 
 .app-shell .stat-value {
   color: var(--glass-text);
-  font-size: 34px;
+  font-size: 30px;
   line-height: 1;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .app-shell .stat-label,
@@ -326,72 +421,292 @@ body {
 }
 
 .app-shell .action-item {
-  border: 1px solid rgba(255, 255, 255, 0.34);
-  border-radius: 24px;
-  background: rgba(244, 249, 255, 0.34);
-  transition: transform 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.35);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s ease, box-shadow 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .app-shell .action-item:hover {
-  transform: translateY(-2px);
-  background: rgba(247, 251, 255, 0.58);
-  box-shadow: 0 14px 34px rgba(76, 105, 168, 0.14);
+  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.06);
 }
 
+/* ===== Glass Buttons (inspired by detail.design) ===== */
 .app-shell .el-button {
-  min-height: 38px;
+  position: relative;
+  overflow: hidden;
+  min-height: 36px;
   border-radius: 999px;
-  border-color: rgba(255, 255, 255, 0.42);
-  background: rgba(244, 249, 255, 0.42);
-  color: var(--glass-text);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.42);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: #334155;
+  font-weight: 500;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+  background: radial-gradient(ellipse at 70% 30%, rgba(148, 163, 184, 0.2) 0%, transparent 60%), rgba(255, 255, 255, 0.22);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .app-shell .el-button:hover {
-  border-color: rgba(255, 255, 255, 0.72);
-  background: rgba(250, 253, 255, 0.64);
-  color: var(--glass-text);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  transform: scale(1.02);
 }
 
+.app-shell .el-button:active {
+  transform: scale(0.98);
+  transition-duration: 0.1s;
+}
+
+/* Primary — cyan glow */
 .app-shell .el-button--primary {
-  border-color: var(--glass-black);
-  background: var(--glass-black);
-  color: #fff;
+  border-color: rgba(6, 182, 212, 0.28);
+  background: radial-gradient(ellipse at 70% 30%, rgba(6, 182, 212, 0.35) 0%, rgba(8, 145, 178, 0.18) 50%, transparent 70%), rgba(255, 255, 255, 0.25);
+  color: #0e7490;
 }
 
 .app-shell .el-button--primary:hover {
-  border-color: #15100b;
-  background: #15100b;
-  color: #fff;
+  border-color: rgba(6, 182, 212, 0.5);
+  background: radial-gradient(ellipse at 70% 30%, rgba(6, 182, 212, 0.5) 0%, rgba(8, 145, 178, 0.28) 50%, transparent 70%), rgba(255, 255, 255, 0.3);
+  color: #0e7490;
 }
 
+/* Success — emerald/teal glow */
+.app-shell .el-button--success {
+  border-color: rgba(16, 185, 129, 0.28);
+  background: radial-gradient(ellipse at 70% 30%, rgba(16, 185, 129, 0.35) 0%, rgba(20, 184, 166, 0.18) 50%, transparent 70%), rgba(255, 255, 255, 0.25);
+  color: #0f766e;
+}
+
+.app-shell .el-button--success:hover {
+  border-color: rgba(16, 185, 129, 0.5);
+  background: radial-gradient(ellipse at 70% 30%, rgba(16, 185, 129, 0.5) 0%, rgba(20, 184, 166, 0.28) 50%, transparent 70%), rgba(255, 255, 255, 0.3);
+  color: #0f766e;
+}
+
+/* Warning — amber/orange glow */
+.app-shell .el-button--warning {
+  border-color: rgba(245, 158, 11, 0.28);
+  background: radial-gradient(ellipse at 70% 30%, rgba(245, 158, 11, 0.35) 0%, rgba(249, 115, 22, 0.18) 50%, transparent 70%), rgba(255, 255, 255, 0.25);
+  color: #b45309;
+}
+
+.app-shell .el-button--warning:hover {
+  border-color: rgba(245, 158, 11, 0.5);
+  background: radial-gradient(ellipse at 70% 30%, rgba(245, 158, 11, 0.5) 0%, rgba(249, 115, 22, 0.28) 50%, transparent 70%), rgba(255, 255, 255, 0.3);
+  color: #b45309;
+}
+
+/* Danger — rose/red glow */
 .app-shell .el-button--danger {
-  border-color: rgba(255, 255, 255, 0.38);
-  background: rgba(255, 238, 238, 0.45);
-  color: #b73131;
+  border-color: rgba(244, 63, 94, 0.28);
+  background: radial-gradient(ellipse at 70% 30%, rgba(244, 63, 94, 0.35) 0%, rgba(239, 68, 68, 0.18) 50%, transparent 70%), rgba(255, 255, 255, 0.25);
+  color: #be123c;
 }
 
+.app-shell .el-button--danger:hover {
+  border-color: rgba(244, 63, 94, 0.5);
+  background: radial-gradient(ellipse at 70% 30%, rgba(244, 63, 94, 0.5) 0%, rgba(239, 68, 68, 0.28) 50%, transparent 70%), rgba(255, 255, 255, 0.3);
+  color: #be123c;
+}
+
+/* Info — slate/blue-gray glow */
+.app-shell .el-button--info {
+  border-color: rgba(100, 116, 139, 0.28);
+  background: radial-gradient(ellipse at 70% 30%, rgba(100, 116, 139, 0.28) 0%, rgba(71, 85, 105, 0.14) 50%, transparent 70%), rgba(255, 255, 255, 0.25);
+  color: #475569;
+}
+
+/* Plain — transparent background, colored border */
+.app-shell .el-button.is-plain {
+  background: transparent;
+  backdrop-filter: none;
+}
+
+/* Text and Link — no glow, no border */
+.app-shell .el-button.is-text,
+.app-shell .el-button.is-link {
+  background: none;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  border-radius: 8px;
+  padding: 4px 8px;
+  color: var(--glass-cyan);
+}
+
+.app-shell .el-button.is-text:hover,
+.app-shell .el-button.is-link:hover {
+  background: rgba(6, 182, 212, 0.08);
+  transform: none;
+  box-shadow: none;
+}
+
+/* Circle — icon-only buttons */
+.app-shell .el-button.is-circle {
+  border-radius: 50%;
+  padding: 8px;
+  min-width: 36px;
+}
+
+/* Small size */
+.app-shell .el-button--small {
+  min-height: 32px;
+  padding: 5px 14px;
+  font-size: 12px;
+  border-radius: 999px;
+}
+
+/* Large size */
+.app-shell .el-button--large {
+  min-height: 42px;
+  padding: 10px 24px;
+  font-size: 15px;
+  border-radius: 999px;
+}
+
+/* Disabled */
+.app-shell .el-button.is-disabled,
+.app-shell .el-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.app-shell .el-button.is-disabled:hover,
+.app-shell .el-button:disabled:hover {
+  transform: none !important;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07) !important;
+}
+
+/* Form Inputs */
 .app-shell .el-input__wrapper,
 .app-shell .el-select__wrapper,
 .app-shell .el-textarea__inner {
   min-height: 40px;
-  border-radius: 18px;
-  background: rgba(243, 249, 255, 0.42);
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.36),
-    inset 0 1px 0 rgba(255, 255, 255, 0.52);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.65);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  transition: box-shadow 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.25s ease;
 }
 
 .app-shell .el-input__wrapper.is-focus,
 .app-shell .el-select__wrapper.is-focused,
 .app-shell .el-textarea__inner:focus {
-  box-shadow:
-    inset 0 0 0 1px rgba(93, 140, 255, 0.55),
-    0 0 0 4px rgba(93, 140, 255, 0.1);
+  box-shadow: inset 0 0 0 1px rgba(6, 182, 212, 0.5), 0 0 0 4px rgba(6, 182, 212, 0.1);
+  background: rgba(255, 255, 255, 0.85);
 }
 
+/* Select Dropdown */
+.app-shell .el-zoom-in-top-enter-active,
+.app-shell .el-zoom-in-top-leave-active {
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease;
+  transform-origin: top center;
+}
+
+.app-shell .el-zoom-in-top-enter-from,
+.app-shell .el-zoom-in-top-leave-to {
+  opacity: 0;
+  transform: scaleY(0.92);
+}
+
+.app-shell .el-select-dropdown {
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(20px);
+  padding: 4px;
+}
+
+.app-shell .el-select-dropdown__item {
+  border-radius: 10px;
+  transition: background 0.2s ease, transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.app-shell .el-select-dropdown__item.hover,
+.app-shell .el-select-dropdown__item:hover {
+  background: rgba(6, 182, 212, 0.08);
+}
+
+.app-shell .el-select-dropdown__item.selected {
+  background: rgba(6, 182, 212, 0.12);
+  color: #06b6d4;
+  font-weight: 500;
+}
+
+/* Checkbox */
+.app-shell .el-checkbox__inner {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  border: 2px solid #d1d5db;
+  background: #fff;
+  transition: background 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.app-shell .el-checkbox__input.is-checked .el-checkbox__inner {
+  background: #06b6d4;
+  border-color: #06b6d4;
+  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.15);
+}
+
+.app-shell .el-checkbox__inner::after {
+  border-color: #fff;
+  height: 8px;
+  left: 5px;
+  top: 1px;
+  width: 4px;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Radio */
+.app-shell .el-radio__inner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #d1d5db;
+  background: #fff;
+  transition: border-color 0.2s ease, background 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.app-shell .el-radio__input.is-checked .el-radio__inner {
+  border-color: #06b6d4;
+  background: #06b6d4;
+}
+
+.app-shell .el-radio__inner::after {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform: scale(0);
+}
+
+.app-shell .el-radio__input.is-checked .el-radio__inner::after {
+  transform: scale(1);
+}
+
+/* Switch */
+.app-shell .el-switch__core {
+  border-radius: 12px;
+  height: 22px;
+  min-width: 40px;
+  transition: background 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.app-shell .el-switch.is-checked .el-switch__core {
+  background: #06b6d4;
+  border-color: #06b6d4;
+}
+
+.app-shell .el-switch__core .el-switch__action {
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Table */
 .app-shell .el-table {
-  border-radius: 22px;
+  border-radius: 20px;
   background: transparent;
   overflow: hidden;
 }
@@ -401,10 +716,13 @@ body {
   display: none;
 }
 
-.app-shell .el-table th.el-table__cell {
-  background: rgba(241, 247, 255, 0.46);
-  color: rgba(25, 35, 61, 0.74);
-  font-weight: 500;
+.app-shell .el-table th.el-table__cell,
+.app-shell .el-table .el-table__header th,
+.app-shell .el-table .el-table__header-wrapper th {
+  background: rgba(6, 182, 212, 0.06) !important;
+  color: #374151 !important;
+  font-weight: 600;
+  font-size: 13px;
   border-bottom: 1px solid var(--glass-line);
 }
 
@@ -414,81 +732,228 @@ body {
 }
 
 .app-shell .el-table td.el-table__cell {
-  border-bottom: 1px solid rgba(115, 140, 188, 0.16);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.app-shell .el-table__row {
+  transition: background 0.2s ease;
 }
 
 .app-shell .el-table__row:hover > td.el-table__cell {
-  background: rgba(247, 251, 255, 0.46) !important;
+  background: rgba(6, 182, 212, 0.04);
 }
 
+/* Tags */
 .app-shell .el-tag {
-  border: 1px solid rgba(255, 255, 255, 0.38);
-  border-radius: 999px;
-  background: rgba(244, 249, 255, 0.48);
-  color: #182036;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.6);
+  color: #374151;
+  padding: 0 10px;
+  height: 26px;
+  line-height: 24px;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.app-shell .el-tag:hover {
+  transform: translateY(-1px);
 }
 
 .app-shell .el-tag--success {
-  background: rgba(228, 247, 235, 0.62);
-  color: #157045;
+  background: rgba(209, 250, 229, 0.7);
+  color: #059669;
+  border-color: rgba(16, 185, 129, 0.2);
 }
 
 .app-shell .el-tag--warning {
-  background: rgba(255, 245, 220, 0.7);
-  color: #8a5a05;
+  background: rgba(254, 243, 199, 0.7);
+  color: #d97706;
+  border-color: rgba(245, 158, 11, 0.2);
 }
 
 .app-shell .el-tag--danger {
-  background: rgba(255, 235, 235, 0.68);
-  color: #a83232;
+  background: rgba(254, 226, 226, 0.7);
+  color: #dc2626;
+  border-color: rgba(239, 68, 68, 0.2);
 }
 
+/* Pagination */
 .app-shell .el-pagination {
-  --el-pagination-button-bg-color: rgba(244, 249, 255, 0.42);
-  --el-pagination-hover-color: #0d0905;
+  --el-pagination-button-bg-color: rgba(255, 255, 255, 0.6);
+  --el-pagination-hover-color: #06b6d4;
   justify-content: flex-end;
 }
 
-.app-shell .el-pager li,
-.app-shell .el-pagination button {
-  border-radius: 999px;
+.app-shell .el-pagination button,
+.app-shell .el-pager li {
+  border-radius: 10px;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
+.app-shell .el-pager li.is-active {
+  background: rgba(6, 182, 212, 0.1);
+  color: #06b6d4;
+  font-weight: 600;
+}
+
+/* Dialog */
 .app-shell .el-dialog {
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: 28px;
-  background:
-    linear-gradient(135deg, rgba(226, 239, 255, 0.92), rgba(238, 246, 249, 0.92));
-  box-shadow: 0 30px 90px rgba(42, 56, 91, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.15);
   backdrop-filter: blur(28px);
 }
 
 .app-shell .el-dialog__header {
-  padding: 24px 28px 10px;
+  padding: 24px 28px 8px;
 }
 
 .app-shell .el-dialog__body {
-  padding: 18px 28px;
+  padding: 16px 28px;
 }
 
 .app-shell .el-dialog__footer {
-  padding: 10px 28px 26px;
+  padding: 8px 28px 24px;
 }
 
+/* Tabs */
+.app-shell .el-tabs__item {
+  transition: color 0.2s ease;
+  font-weight: 500;
+}
+
+.app-shell .el-tabs__item.is-active {
+  color: #06b6d4;
+}
+
+.app-shell .el-tabs__active-bar {
+  background: #06b6d4;
+  height: 2.5px;
+  border-radius: 2px;
+}
+
+/* Message */
+.app-shell .el-message {
+  border-radius: 16px;
+  border: none;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(20px);
+  min-width: 300px;
+}
+
+.app-shell .el-message--success {
+  background: rgba(209, 250, 229, 0.9);
+  color: #059669;
+}
+
+.app-shell .el-message--warning {
+  background: rgba(254, 243, 199, 0.9);
+  color: #d97706;
+}
+
+.app-shell .el-message--error {
+  background: rgba(254, 226, 226, 0.9);
+  color: #dc2626;
+}
+
+/* Empty, Loading, Progress */
 .app-shell .el-empty__description p {
   color: var(--glass-muted);
 }
 
+.app-shell .el-loading-mask {
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(4px);
+}
+
+.app-shell .el-progress-bar__outer {
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.app-shell .el-progress-bar__inner {
+  transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Alert */
+.app-shell .el-alert {
+  border-radius: 14px;
+  border: none;
+}
+
+.app-shell .el-alert--info {
+  background: rgba(6, 182, 212, 0.08);
+}
+
+/* Tree */
+.app-shell .el-tree {
+  background: transparent;
+  color: var(--glass-text);
+}
+
+.app-shell .el-tree-node__content:hover {
+  background: rgba(6, 182, 212, 0.06);
+}
+
+/* Descriptions, Divider */
+.app-shell .el-descriptions__title {
+  color: var(--glass-text);
+}
+
+.app-shell .el-descriptions__label {
+  color: var(--glass-muted);
+}
+
+.app-shell .el-divider {
+  border-color: var(--glass-line);
+}
+
+/* Steps */
+.app-shell .el-step__head.is-finish {
+  color: #06b6d4;
+  border-color: #06b6d4;
+}
+
+.app-shell .el-step__title.is-finish {
+  color: #06b6d4;
+}
+
+/* Collapse */
+.app-shell .el-collapse-item__header.is-active {
+  color: #06b6d4;
+}
+
+/* Breadcrumb */
+.app-shell .el-breadcrumb__inner.is-link:hover {
+  color: #06b6d4;
+}
+
+/* Tooltip */
+.app-shell .el-tooltip__popper {
+  border-radius: 10px;
+  border: none;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* Popconfirm */
+.app-shell .el-popconfirm {
+  border-radius: 16px;
+}
+
+/* Responsive */
 @media screen and (max-width: 768px) {
-  .app-shell .page-header,
   .app-shell .card-container,
   .app-shell .el-card__body {
-    padding: 18px !important;
+    padding: 16px;
   }
 
   .app-shell .card-container,
-  .app-shell .el-card,
-  .app-shell .page-header {
-    border-radius: 22px !important;
+  .app-shell .el-card {
+    border-radius: 20px;
+  }
+
+  .app-shell .el-dialog {
+    border-radius: 20px;
   }
 }

@@ -1,21 +1,22 @@
 <template>
-    <div class="ui-test-scene-builder">
-        <div style="margin-bottom: 20px;">
-            <el-button
-                type="primary"
-                size="small"
-                :icon="Check"
-                :loading="saving"
-                @click="saveScene"
-            >
-                保存用例
-            </el-button>
-            <el-button size="small" :icon="Refresh" @click="resetScene">
-                重置
-            </el-button>
-        </div>
-
+    <div class="ui-test-scene-builder page-container">
         <el-card class="scene-config">
+            <template #header>
+                <div class="card-toolbar">
+                    <el-button
+                        type="primary"
+                        size="small"
+                        :icon="Check"
+                        :loading="saving"
+                        @click="saveScene"
+                    >
+                        保存用例
+                    </el-button>
+                    <el-button size="small" :icon="Refresh" @click="resetScene">
+                        重置
+                    </el-button>
+                </div>
+            </template>
             <el-form :model="sceneForm" label-width="120px" size="small">
                 <el-row :gutter="16">
                     <el-col :span="8">

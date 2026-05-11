@@ -1,14 +1,15 @@
 <template>
-  <div class="automation-testing">
-    <div class="header">
-      <h3>{{ $t('apiTesting.automation.title') }}</h3>
-      <el-button type="primary" @click="showCreateSuiteDialog = true">
-        <el-icon><Plus /></el-icon>
-        {{ $t('apiTesting.automation.createSuite') }}
-      </el-button>
-    </div>
+  <div class="automation-testing page-container">
+    <div class="card-container">
+      <div class="card-toolbar">
+        <h3 style="margin: 0;">{{ $t('apiTesting.automation.title') }}</h3>
+        <el-button type="primary" @click="showCreateSuiteDialog = true" style="margin-left: auto;">
+          <el-icon><Plus /></el-icon>
+          {{ $t('apiTesting.automation.createSuite') }}
+        </el-button>
+      </div>
 
-    <div class="content-layout">
+      <div class="content-layout">
       <!-- 左侧项目选择和测试套件列表 -->
       <div class="sidebar">
         <div class="project-selector">
@@ -196,6 +197,7 @@
             </el-table>
           </div>
         </div>
+      </div>
       </div>
     </div>
 

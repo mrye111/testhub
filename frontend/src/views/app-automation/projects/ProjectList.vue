@@ -1,32 +1,33 @@
 <template>
   <div class="page-container">
-    <div style="margin-bottom: 20px;">
-      <el-button type="primary" @click="openCreateDialog">
-        <el-icon><Plus /></el-icon>新建项目
-      </el-button>
-    </div>
-
     <div class="card-container">
       <!-- 筛选 -->
       <div class="filter-bar">
-        <el-row :gutter="20">
-          <el-col :span="6">
-            <el-input v-model="searchText" placeholder="搜索项目名称" clearable @clear="loadProjects" @keyup.enter="loadProjects">
-              <template #prefix><el-icon><Search /></el-icon></template>
-            </el-input>
-          </el-col>
-          <el-col :span="4">
-            <el-select v-model="statusFilter" placeholder="项目状态" clearable @change="loadProjects">
-              <el-option label="未开始" value="NOT_STARTED" />
-              <el-option label="进行中" value="IN_PROGRESS" />
-              <el-option label="已结束" value="COMPLETED" />
-            </el-select>
-          </el-col>
-          <el-col :span="4">
-            <el-button type="primary" @click="loadProjects"><el-icon><Search /></el-icon>查询</el-button>
-            <el-button @click="searchText = ''; statusFilter = ''; loadProjects()">重置</el-button>
-          </el-col>
-        </el-row>
+        <div class="filter-bar__fields">
+          <el-row :gutter="20">
+            <el-col :span="6">
+              <el-input v-model="searchText" placeholder="搜索项目名称" clearable @clear="loadProjects" @keyup.enter="loadProjects">
+                <template #prefix><el-icon><Search /></el-icon></template>
+              </el-input>
+            </el-col>
+            <el-col :span="4">
+              <el-select v-model="statusFilter" placeholder="项目状态" clearable @change="loadProjects">
+                <el-option label="未开始" value="NOT_STARTED" />
+                <el-option label="进行中" value="IN_PROGRESS" />
+                <el-option label="已结束" value="COMPLETED" />
+              </el-select>
+            </el-col>
+            <el-col :span="4">
+              <el-button type="primary" @click="loadProjects"><el-icon><Search /></el-icon>查询</el-button>
+              <el-button @click="searchText = ''; statusFilter = ''; loadProjects()">重置</el-button>
+            </el-col>
+          </el-row>
+        </div>
+        <div class="filter-bar__actions">
+          <el-button type="primary" @click="openCreateDialog">
+            <el-icon><Plus /></el-icon>新建项目
+          </el-button>
+        </div>
       </div>
 
       <!-- 项目列表 -->
@@ -263,7 +264,7 @@ function formatDateTime(dt) {
 .page-container { padding: 20px; }
 .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
 .page-title { margin: 0; font-size: 20px; }
-.card-container { background: #fff; border-radius: 8px; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-.filter-bar { margin-bottom: 20px; }
+.card-container { /* styled globally */ }
+.filter-bar { /* styled globally */ }
 .pagination-container { margin-top: 20px; display: flex; justify-content: flex-end; }
 </style>

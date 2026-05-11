@@ -1,17 +1,17 @@
 <template>
-  <div class="test-case-manager">
-    <h1 class="page-title">{{ t('uiAutomation.testCase.title') }}</h1>
-    <div style="margin-bottom: 20px;" class="header-actions">
-      <el-select v-model="projectId" :placeholder="t('uiAutomation.project.selectProject')" style="width: 200px; margin-right: 15px" @change="onProjectChange">
-        <el-option v-for="project in projects" :key="project.id" :label="project.name" :value="project.id" />
-      </el-select>
-      <el-button type="primary" @click="showCreateDialog = true">
-        <el-icon><Plus /></el-icon>
-        {{ t('uiAutomation.testCase.newTestCase') }}
-      </el-button>
-    </div>
+  <div class="test-case-manager page-container">
+    <div class="card-container">
+      <div class="card-toolbar">
+        <el-select v-model="projectId" :placeholder="t('uiAutomation.project.selectProject')" style="width: 200px" @change="onProjectChange">
+          <el-option v-for="project in projects" :key="project.id" :label="project.name" :value="project.id" />
+        </el-select>
+        <el-button type="primary" @click="showCreateDialog = true">
+          <el-icon><Plus /></el-icon>
+          {{ t('uiAutomation.testCase.newTestCase') }}
+        </el-button>
+      </div>
 
-    <div class="main-content">
+      <div class="main-content">
       <!-- 左侧：测试用例列表 -->
       <div class="left-panel">
         <div class="panel-header">
@@ -395,6 +395,7 @@
           <el-empty :description="t('uiAutomation.testCase.selectTestCase')" />
         </div>
       </div>
+    </div>
     </div>
 
     <!-- 新建/编辑测试用例对话框 -->

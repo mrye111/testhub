@@ -1,6 +1,7 @@
 <template>
-  <div class="interface-management">
-    <div class="interface-layout">
+  <div class="interface-management page-container">
+    <div class="card-container" style="padding: 0 !important; overflow: hidden;">
+      <div class="interface-layout">
       <!-- 左侧集合树 -->
       <div class="sidebar">
         <div class="sidebar-header">
@@ -746,6 +747,7 @@
           </div>
         </div>
       </div>
+    </div>
     </div>
 
     <!-- 创建集合对话框 -->
@@ -2656,10 +2658,10 @@ const useLocalVariableCategories = () => {
 
 <style scoped>
 .interface-management {
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  background: #f5f7fa;
+  background: transparent;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 

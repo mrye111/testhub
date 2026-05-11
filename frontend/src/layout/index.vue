@@ -329,45 +329,51 @@
             </div>
           </template>
         </nav>
+
+        <!-- Sidebar footer: language + user -->
+        <div class="sidebar-footer">
+          <!-- Language switcher -->
+          <el-dropdown @command="handleLanguageChange" class="sidebar-footer-dropdown">
+            <button class="sidebar-footer-btn lang-btn" :data-label="currentLanguage">
+              <span class="button-glow" aria-hidden="true"></span>
+              <span class="sidebar-footer-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+                  <circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                </svg>
+              </span>
+              <span v-if="!sidebarCollapsed" class="sidebar-footer-label">{{ currentLanguage }}</span>
+            </button>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item command="zh-cn" :disabled="appStore.language === 'zh-cn'">🇨🇳 简体中文</el-dropdown-item>
+                <el-dropdown-item command="en" :disabled="appStore.language === 'en'">🇺🇸 English</el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+
+          <!-- User menu -->
+          <el-dropdown @command="handleCommand" class="sidebar-footer-dropdown">
+            <button class="sidebar-footer-btn user-btn" :data-label="userStore.user?.username">
+              <span class="button-glow" aria-hidden="true"></span>
+              <span class="sidebar-footer-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+                </svg>
+              </span>
+              <span v-if="!sidebarCollapsed" class="sidebar-footer-label">{{ userStore.user?.username }}</span>
+            </button>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item command="profile">{{ $t('nav.profile') }}</el-dropdown-item>
+                <el-dropdown-item divided command="logout">{{ $t('nav.logout') }}</el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </div>
       </aside>
 
       <!-- Right content area -->
       <div class="content-area">
-        <!-- Header -->
-        <header class="content-header">
-          <div class="header-left"></div>
-          <div class="header-center"></div>
-          <div class="header-right">
-            <!-- Language switcher -->
-            <el-dropdown @command="handleLanguageChange" class="header-dropdown">
-              <button class="header-icon-btn lang-btn">
-                <span class="lang-flag">{{ appStore.language === 'zh-cn' ? '🇨🇳' : '🇺🇸' }}</span>
-                <span class="lang-text">{{ currentLanguage }}</span>
-              </button>
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item command="zh-cn" :disabled="appStore.language === 'zh-cn'">🇨🇳 简体中文</el-dropdown-item>
-                  <el-dropdown-item command="en" :disabled="appStore.language === 'en'">🇺🇸 English</el-dropdown-item>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
-
-            <!-- User menu -->
-            <el-dropdown @command="handleCommand" class="header-dropdown">
-              <button class="header-icon-btn user-btn">
-                <el-avatar :size="28" :src="userStore.user?.avatar" class="user-avatar" />
-                <span class="user-name">{{ userStore.user?.username }}</span>
-              </button>
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item command="profile">{{ $t('nav.profile') }}</el-dropdown-item>
-                  <el-dropdown-item divided command="logout">{{ $t('nav.logout') }}</el-dropdown-item>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
-          </div>
-        </header>
-
         <!-- Page content -->
         <main class="content-main">
           <router-view />
@@ -452,6 +458,7 @@ const NavItem = {
         'data-label': props.label,
         class: ['nav-item', { 'nav-item--active': props.active }]
       }, [
+        h('span', { class: 'button-glow', 'aria-hidden': 'true' }),
         h('div', { class: 'nav-item__icon' }, [
           h('svg', {
             viewBox: '0 0 24 24',
@@ -489,77 +496,6 @@ const currentModule = computed(() => {
   if (route.path.startsWith('/ai-intelligent-mode')) return 'ai-intelligent-mode'
   if (route.path.startsWith('/configuration')) return 'configuration'
   return ''
-})
-
-const moduleName = computed(() => {
-  const map = {
-    'ai-generation': t('modules.aiGeneration'),
-    'api-testing': t('modules.apiTesting'),
-    'ui-automation': t('modules.uiAutomation'),
-    'app-automation': 'APP自动化测试',
-    'ai-intelligent-mode': t('modules.aiIntelligentMode'),
-    'configuration': t('modules.configuration')
-  }
-  return map[currentModule.value] || ''
-})
-
-const breadcrumbTitle = computed(() => {
-  const routeMap = {
-    '/ai-generation/requirement-analysis': t('menu.aiCaseGeneration'),
-    '/ai-generation/generated-testcases': t('menu.aiGeneratedTestcases'),
-    '/ai-generation/projects': t('menu.projectManagement'),
-    '/ai-generation/testcases': t('menu.testCases'),
-    '/ai-generation/versions': t('menu.versionManagement'),
-    '/ai-generation/reviews': t('menu.reviewList'),
-    '/ai-generation/review-templates': t('menu.reviewTemplates'),
-    '/ai-generation/testsuites': t('menu.suiteManagement'),
-    '/ai-generation/executions': t('menu.executionRecords'),
-    '/ai-generation/reports': t('menu.testReport'),
-    '/api-testing/dashboard': t('menu.dashboard'),
-    '/api-testing/projects': t('menu.projectManagement'),
-    '/api-testing/interfaces': t('menu.interfaceManagement'),
-    '/api-testing/automation': t('menu.automationTesting'),
-    '/api-testing/history': t('menu.requestHistory'),
-    '/api-testing/environments': t('menu.environmentManagement'),
-    '/api-testing/reports': t('menu.testReport'),
-    '/api-testing/scheduled-tasks': t('menu.scheduledTasks'),
-    '/api-testing/notification-logs': t('menu.notificationList'),
-    '/ui-automation/dashboard': t('menu.dashboard'),
-    '/ui-automation/projects': t('menu.projectManagement'),
-    '/ui-automation/elements-enhanced': t('menu.elementManagement'),
-    '/ui-automation/test-cases': t('menu.caseManagement'),
-    '/ui-automation/scripts-enhanced': t('menu.scriptGeneration'),
-    '/ui-automation/scripts': t('menu.scriptList'),
-    '/ui-automation/suites': t('menu.suiteManagement'),
-    '/ui-automation/executions': t('menu.executionRecords'),
-    '/ui-automation/reports': t('menu.testReport'),
-    '/ui-automation/scheduled-tasks': t('menu.scheduledTasks'),
-    '/ui-automation/notification-logs': t('menu.notificationList'),
-    '/app-automation/dashboard': 'Dashboard',
-    '/app-automation/projects': '项目管理',
-    '/app-automation/devices': '设备管理',
-    '/app-automation/packages': '包名管理',
-    '/app-automation/elements': '元素管理',
-    '/app-automation/scene-builder': '用例编排',
-    '/app-automation/test-cases': '测试用例',
-    '/app-automation/test-suites': '测试套件',
-    '/app-automation/scheduled-tasks': '定时任务',
-    '/app-automation/notification-logs': '通知列表',
-    '/app-automation/executions': '执行记录',
-    '/app-automation/reports': '测试报告',
-    '/ai-intelligent-mode/testing': t('menu.aiIntelligentTesting'),
-    '/ai-intelligent-mode/cases': t('menu.aiCaseManagement'),
-    '/ai-intelligent-mode/execution-records': t('menu.aiExecutionRecords'),
-    '/configuration/ai-model': t('menu.aiModelConfig'),
-    '/configuration/prompt-config': t('menu.promptConfig'),
-    '/configuration/generation-config': t('menu.generationConfig'),
-    '/configuration/ui-env': t('menu.uiEnvConfig'),
-    '/configuration/ai-mode': t('menu.aiModeConfig'),
-    '/configuration/scheduled-task': t('menu.scheduledTaskConfig'),
-    '/configuration/dify': t('menu.difyConfig'),
-    '/profile': t('nav.profile')
-  }
-  return routeMap[route.path] || route.meta.title || ''
 })
 
 const handleCommand = (command) => {
@@ -850,120 +786,193 @@ $radius-xl: 32px;
   background: rgba(255, 255, 255, 0.55);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  margin: 8px;
+  margin: 0 8px 8px 0;
   border-radius: $radius-xl;
   overflow: hidden;
   min-width: 0;
   border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
-/* ===== Content Header ===== */
-.content-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 24px;
-  background: rgba(255, 255, 255, 0.85);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+/* ===== Sidebar Footer ===== */
+.sidebar-footer {
   flex-shrink: 0;
-  border-radius: $radius-xl $radius-xl 0 0;
+  padding: 12px;
+  border-top: 1px solid $gray-200;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: padding 0.32s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.header-left,
-.header-center {
-  display: none;
+.sidebar-footer-dropdown {
+  outline: none;
+  width: 100%;
 }
 
-.breadcrumb {
+.sidebar-footer-btn {
+  position: relative;
+  overflow: hidden;
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 14px;
-  color: $gray-400;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.46);
+  border-radius: 999px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.32), rgba(255, 255, 255, 0.14));
+  color: #475569;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+  outline: none;
+  font-family: inherit;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.72),
+    0 8px 24px rgba(31, 38, 135, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transform: translateZ(0);
+  transition:
+    color 0.22s ease,
+    border-color 0.22s ease,
+    box-shadow 0.28s ease,
+    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    padding 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    border-radius 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.64);
+    color: #0f172a;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.82),
+      0 12px 28px rgba(31, 38, 135, 0.11);
+    transform: translateY(-1px) scale(1.012);
+  }
+
+  &:hover .button-glow {
+    opacity: 0.72;
+    transform: translate(6px, 4px) scale(1.04);
+  }
+
+  &:active {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.62),
+      0 5px 16px rgba(31, 38, 135, 0.07);
+    transform: translateY(0) scale(0.98);
+  }
+}
+
+.sidebar-footer-icon {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  color: $gray-500;
+  transition: color 0.18s ease;
+}
+
+.sidebar-footer-label {
+  position: relative;
+  z-index: 2;
+}
+
+.sidebar-footer-btn:hover .sidebar-footer-icon {
+  color: #0f172a;
+}
+
+.sidebar-footer-label {
+  flex: 1;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  opacity: 1;
+  transform: translateX(0);
+  transition:
+    opacity 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.breadcrumb-home {
-  color: $gray-500;
-  cursor: pointer;
-  transition: color 0.2s;
-
-  &:hover {
-    color: $cyan-500;
-  }
-}
-
-.breadcrumb-sep {
-  color: $gray-300;
-  font-size: 12px;
-}
-
-.breadcrumb-module {
-  color: $gray-500;
-}
-
-.breadcrumb-current {
-  color: $gray-800;
-  font-weight: 600;
-}
-
-.header-right {
-  display: flex;
+/* Collapsed sidebar footer */
+.sidebar--collapsed .sidebar-footer {
+  padding: 10px;
   align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
 }
 
-.header-icon-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 14px;
-  border: 1px solid $gray-200;
+.sidebar--collapsed .sidebar-footer-btn {
+  width: 48px;
+  min-width: 48px;
+  height: 44px;
+  min-height: 44px;
+  justify-content: center;
+  padding: 0;
+  margin: 0 auto;
   border-radius: 12px;
-  background: white;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-family: inherit;
-  font-size: 13px;
-  color: $gray-600;
-
-  &:hover {
-    border-color: $cyan-400;
-    background: $cyan-50;
-    color: $cyan-600;
-  }
+  position: relative;
 }
 
-.lang-btn {
-  .lang-flag {
-    font-size: 16px;
-    line-height: 1;
-  }
-  .lang-text {
-    font-weight: 500;
-  }
+.sidebar--collapsed .sidebar-footer-label {
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+  transform: translateX(-8px);
+  pointer-events: none;
+  position: absolute;
 }
 
-.user-btn {
-  .user-name {
-    font-weight: 500;
-    color: $gray-700;
-    max-width: 100px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
+/* Tooltip for collapsed footer buttons */
+.sidebar--collapsed .sidebar-footer-btn::after {
+  content: attr(data-label);
+  position: absolute;
+  left: calc(100% + 10px);
+  top: 50%;
+  transform: translateY(-50%) translateX(-6px);
+  padding: 6px 12px;
+  background: #1e293b;
+  color: white;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  border-radius: 8px;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.18s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  letter-spacing: 0;
 }
 
-.user-avatar {
-  flex-shrink: 0;
+.sidebar--collapsed .sidebar-footer-btn::before {
+  content: '';
+  position: absolute;
+  left: calc(100% + 6px);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  border-right: 4px solid #1e293b;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 100;
 }
 
-.header-dropdown {
-  outline: none;
+.sidebar--collapsed .sidebar-footer-btn:hover::after {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+.sidebar--collapsed .sidebar-footer-btn:hover::before {
+  opacity: 1;
 }
 
 /* ===== Content Main ===== */
@@ -1021,17 +1030,8 @@ $radius-xl: 32px;
   }
 
   .content-area {
-    margin: 6px;
+    margin: 0 6px 6px 0;
     border-radius: $radius-lg;
-  }
-
-  .content-header {
-    border-radius: $radius-lg $radius-lg 0 0;
-    padding: 12px 16px;
-  }
-
-  .user-name {
-    display: none;
   }
 }
 
@@ -1050,18 +1050,8 @@ $radius-xl: 32px;
   }
 
   .content-area {
-    margin: 4px;
+    margin: 0 4px 4px 0;
     border-radius: 16px;
-  }
-
-  .content-header {
-    border-radius: 16px 16px 0 0;
-    padding: 10px 12px;
-  }
-
-  .breadcrumb-module,
-  .breadcrumb-sep:last-of-type {
-    display: none;
   }
 }
 
@@ -1259,141 +1249,14 @@ $radius-xl: 32px;
 
 .content-area {
   margin: 0;
-  padding: 30px 30px 30px 18px;
+  padding: 20px 20px 20px 12px;
   border-radius: 0;
   background: transparent;
-}
-
-.content-header {
-  min-height: 122px;
-  padding: 0 16px 22px 0;
-  background: transparent;
-  border-bottom: 0;
-  border-radius: 0;
-  align-items: flex-start;
-}
-
-.header-left {
-  display: none;
-}
-
-.header-title-stack h1 {
-  margin: 0;
-  color: #090a0e;
-  font-size: 32px;
-  line-height: 1.05;
-  font-weight: 500;
-  letter-spacing: 0;
-}
-
-.header-title-stack p {
-  margin: 8px 0 0;
-  color: rgba(45, 58, 96, 0.72);
-  font-size: 16px;
-  line-height: 1.35;
-}
-
-.breadcrumb {
-  width: fit-content;
-  max-width: min(52vw, 620px);
-  padding: 8px 14px;
-  border: 1px solid rgba(127, 149, 196, 0.32);
-  border-radius: 999px;
-  background: rgba(202, 217, 240, 0.28);
-  color: rgba(31, 42, 71, 0.72);
-  backdrop-filter: blur(16px);
-}
-
-.breadcrumb-current {
-  color: #111317;
-  font-weight: 500;
-}
-
-.breadcrumb-home:hover {
-  color: #111317;
-}
-
-.header-center {
-  flex: 0 1 330px;
-  display: flex;
-  justify-content: center;
-  padding-top: 5px;
-}
-
-.route-chip {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-width: 282px;
-  max-width: 360px;
-  height: 72px;
-  padding: 0 28px;
-  border: 1px solid rgba(109, 130, 181, 0.28);
-  border-radius: 18px;
-  background: rgba(177, 197, 232, 0.2);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
-  color: #111317;
-  font-size: 15px;
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-.route-chip__dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #0b0a08;
-  box-shadow: 14px 0 0 #0b0a08, 28px 0 0 #0b0a08, 42px 0 0 #0b0a08;
-  margin-right: 44px;
-  flex-shrink: 0;
-}
-
-.route-chip strong {
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-weight: 500;
-}
-
-.header-right {
-  gap: 14px;
-  padding-top: 4px;
-}
-
-.header-icon-btn {
-  height: 48px;
-  padding: 0 18px;
-  border: 1px solid rgba(255, 255, 255, 0.38);
-  border-radius: 999px;
-  background: rgba(235, 244, 255, 0.38);
-  color: #0b0a08;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
-
-  &:hover {
-    border-color: rgba(255, 255, 255, 0.72);
-    background: rgba(246, 250, 255, 0.58);
-    color: #0b0a08;
-  }
-}
-
-.user-btn {
-  background: #0b0805;
-  color: #fff;
-  border-color: #0b0805;
-
-  &:hover {
-    background: #0b0805;
-    border-color: #0b0805;
-    color: #fff;
-  }
-
-  .user-name {
-    color: #fff;
-  }
+  border: none;
 }
 
 .content-main {
-  padding: 0 16px 6px 0;
+  padding: 0;
   scrollbar-color: rgba(66, 87, 132, 0.24) transparent;
 }
 
@@ -1412,11 +1275,7 @@ $radius-xl: 32px;
   }
 
   .content-area {
-    padding: 22px 22px 22px 12px;
-  }
-
-  .header-center {
-    display: none;
+    padding: 16px 16px 16px 10px;
   }
 }
 
@@ -1426,20 +1285,6 @@ $radius-xl: 32px;
     min-width: 70px;
     transform: none;
     position: relative;
-  }
-
-  .content-header {
-    min-height: auto;
-    padding-bottom: 18px;
-    gap: 14px;
-  }
-
-  .header-title-stack h1 {
-    font-size: 24px;
-  }
-
-  .breadcrumb {
-    max-width: 46vw;
   }
 }
 
@@ -1466,22 +1311,8 @@ $radius-xl: 32px;
   }
 
   .content-area {
-    padding: 18px 14px 18px 6px;
+    padding: 12px 10px 12px 6px;
     border-radius: 0;
-  }
-
-  .content-header {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .header-right {
-    padding-top: 0;
-    justify-content: flex-end;
-  }
-
-  .breadcrumb {
-    max-width: 100%;
   }
 }
 
@@ -1492,13 +1323,6 @@ $radius-xl: 32px;
   position: relative;
   overflow: hidden;
   transition: width 0.24s ease, min-width 0.24s ease;
-}
-
-.sidebar-topbar {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  padding: 14px 14px 0;
 }
 
 .sidebar-logo {
@@ -1611,17 +1435,43 @@ $radius-xl: 32px;
   min-height: 50px;
   justify-content: flex-start;
   padding: 0 14px;
-  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.44);
+  border-radius: 999px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.16));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 8px 24px rgba(31, 38, 135, 0.06);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
   margin: 0;
+  transform: translateZ(0);
+  transition:
+    color 0.22s ease,
+    border-color 0.22s ease,
+    box-shadow 0.28s ease,
+    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    width 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    min-width 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    height 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    min-height 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    padding 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    margin 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    justify-content 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    border-radius 0.32s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .nav-item__icon {
+  position: relative;
+  z-index: 2;
   width: 22px;
   height: 22px;
 }
 
 .nav-item__label {
   position: static;
+  z-index: 2;
   width: auto;
   max-width: none;
   height: auto;
@@ -1637,6 +1487,86 @@ $radius-xl: 32px;
   box-shadow: none;
   font-size: 14px;
   text-align: left;
+}
+
+.button-glow {
+  position: absolute;
+  inset: -18px;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  opacity: 0.46;
+  background:
+    radial-gradient(circle at 72% 72%, rgba(99, 102, 241, 0.42), transparent 36%),
+    radial-gradient(circle at 24% 28%, rgba(56, 189, 248, 0.34), transparent 34%),
+    radial-gradient(circle at 48% 120%, rgba(168, 85, 247, 0.26), transparent 42%);
+  filter: blur(14px);
+  transform: translate(10px, 6px);
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.nav-item::before,
+.sidebar-footer-btn::before {
+  content: '';
+  position: absolute;
+  top: 1px;
+  left: 24%;
+  z-index: 1;
+  width: 52%;
+  height: 48%;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.22);
+  filter: blur(12px);
+  pointer-events: none;
+}
+
+.nav-item:hover {
+  border-color: rgba(255, 255, 255, 0.62);
+  color: #101828;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.78),
+    0 12px 30px rgba(31, 38, 135, 0.12);
+  transform: translateY(-1px) scale(1.015);
+}
+
+.nav-item:hover .button-glow {
+  opacity: 0.72;
+  transform: translate(6px, 4px) scale(1.04);
+}
+
+.nav-item:active {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.62),
+    0 5px 16px rgba(31, 38, 135, 0.08);
+  transform: translateY(0) scale(0.98);
+}
+
+.nav-item--active {
+  border-color: rgba(255, 255, 255, 0.68);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.18));
+  color: #0f172a;
+  font-weight: 700;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.82),
+    0 14px 34px rgba(59, 130, 246, 0.18);
+}
+
+.nav-item--active .button-glow {
+  opacity: 0.82;
+  background:
+    radial-gradient(circle at 72% 68%, rgba(59, 130, 246, 0.62), transparent 36%),
+    radial-gradient(circle at 20% 24%, rgba(34, 211, 238, 0.44), transparent 35%),
+    radial-gradient(circle at 52% 120%, rgba(99, 102, 241, 0.34), transparent 42%);
+}
+
+.nav-item--active:hover {
+  color: #0f172a;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.86),
+    0 16px 38px rgba(59, 130, 246, 0.24);
 }
 
 .sidebar--collapsed {
@@ -1691,22 +1621,28 @@ $radius-xl: 32px;
   justify-content: center;
   padding: 0;
   margin: 0 auto 2px auto;
-  border-radius: 12px;
+  border-radius: 999px;
   position: relative;
 }
 
 .sidebar--collapsed .nav-item:hover {
-  background: #f0f4f9;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0.18));
+  transform: translateY(-1px) scale(1.02);
 }
 
 .sidebar--collapsed .nav-item--active {
-  background: linear-gradient(135deg, #06b6d4, #0891b2);
-  box-shadow: 0 2px 8px rgba(6, 182, 212, 0.3);
-  color: white;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.44), rgba(255, 255, 255, 0.2));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.86),
+    0 14px 32px rgba(59, 130, 246, 0.2);
+  color: #0f172a;
 }
 
 .sidebar--collapsed .nav-item--active:hover {
-  background: linear-gradient(135deg, #0891b2, #0e7490);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.24));
 }
 
 .sidebar--collapsed .nav-item__icon {
@@ -1715,7 +1651,7 @@ $radius-xl: 32px;
 }
 
 .sidebar--collapsed .nav-item--active .nav-item__icon {
-  color: white;
+  color: #0f172a;
 }
 
 .sidebar--collapsed .nav-item__label {

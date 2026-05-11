@@ -1,20 +1,21 @@
 <template>
-  <div class="app-package-list">
-    <div style="margin-bottom: 20px;">
-      <el-button :icon="Refresh" :loading="loading" @click="loadPackages">
-        刷新
-      </el-button>
-      <el-button type="primary" :icon="Plus" @click="openCreateDialog">
-        新增包名
-      </el-button>
-    </div>
+  <div class="app-package-list page-container">
+    <div class="card-container">
+      <div class="card-toolbar">
+        <el-button :icon="Refresh" :loading="loading" @click="loadPackages">
+          刷新
+        </el-button>
+        <el-button type="primary" :icon="Plus" @click="openCreateDialog">
+          新增包名
+        </el-button>
+      </div>
 
-    <el-table
-      v-loading="loading"
-      :data="packages"
-      style="width: 100%; margin-top: 16px"
-      empty-text="暂无应用包名"
-    >
+      <el-table
+        v-loading="loading"
+        :data="packages"
+        style="width: 100%"
+        empty-text="暂无应用包名"
+      >
       <el-table-column prop="name" label="应用名称" min-width="180" />
       <el-table-column prop="package_name" label="应用包名" min-width="220" />
       <el-table-column prop="created_by_name" label="创建人" width="120">
@@ -51,10 +52,11 @@
       :total="total"
       :page-sizes="[10, 20, 50, 100]"
       layout="total, sizes, prev, pager, next, jumper"
-      style="margin-top: 16px; text-align: right"
+      class="pagination-container"
       @size-change="loadPackages"
       @current-change="loadPackages"
     />
+    </div>
 
     <el-dialog
       v-model="dialogVisible"

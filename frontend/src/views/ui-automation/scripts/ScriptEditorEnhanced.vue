@@ -1,10 +1,11 @@
 <template>
-  <div class="script-editor-enhanced">
-    <h1 class="page-title">{{ $t('uiAutomation.scriptEditor.title') }}</h1>
-    <div style="margin-bottom: 20px;" class="header-actions">
-      <el-select v-model="projectId" :placeholder="$t('uiAutomation.common.selectProject')" style="width: 200px; margin-right: 15px" @change="onProjectChange">
-        <el-option v-for="project in projects" :key="project.id" :label="project.name" :value="project.id" />
-      </el-select>
+  <div class="script-editor-enhanced page-container">
+    <div class="card-container">
+      <div class="card-toolbar">
+        <el-select v-model="projectId" :placeholder="$t('uiAutomation.common.selectProject')" style="width: 200px" @change="onProjectChange">
+          <el-option v-for="project in projects" :key="project.id" :label="project.name" :value="project.id" />
+        </el-select>
+      </div>
     </div>
 
     <div class="main-content">

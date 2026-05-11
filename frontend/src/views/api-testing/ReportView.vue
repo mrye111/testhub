@@ -1,15 +1,16 @@
 <template>
-  <div class="report-view">
-    <div class="header">
-      <h3>{{ $t('apiTesting.report.title') }}</h3>
-      <div class="actions">
-        <el-button type="primary" @click="refreshReports">{{ $t('apiTesting.report.refreshReport') }}</el-button>
-        <el-button @click="openAllureReport">{{ $t('apiTesting.report.viewAllureReport') }}</el-button>
+  <div class="report-view page-container">
+    <div class="card-container">
+      <div class="card-toolbar">
+        <h3 style="margin: 0;">{{ $t('apiTesting.report.title') }}</h3>
+        <div class="actions" style="margin-left: auto;">
+          <el-button type="primary" @click="refreshReports">{{ $t('apiTesting.report.refreshReport') }}</el-button>
+          <el-button @click="openAllureReport">{{ $t('apiTesting.report.viewAllureReport') }}</el-button>
+        </div>
       </div>
-    </div>
 
-    <div class="content">
-      <el-table :data="reports" v-loading="loading" style="width: 100%">
+      <div class="content">
+        <el-table :data="reports" v-loading="loading" style="width: 100%">
         <el-table-column prop="id" label="ID" width="80" />
         <el-table-column prop="test_suite_name" :label="$t('apiTesting.report.testSuite')" min-width="200" />
         <el-table-column prop="status" :label="$t('apiTesting.common.status')" width="120">
@@ -42,6 +43,7 @@
           </template>
         </el-table-column>
       </el-table>
+      </div>
     </div>
   </div>
 </template>

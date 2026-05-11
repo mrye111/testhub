@@ -1,36 +1,36 @@
 <template>
   <div class="page-container">
-    <h1 class="page-title">{{ $t('uiAutomation.project.title') }}</h1>
-    <div style="margin-bottom: 20px;">
-      <el-button type="primary" @click="showCreateDialog = true">
-        <el-icon><Plus /></el-icon>
-        {{ $t('uiAutomation.project.newProject') }}
-      </el-button>
-    </div>
-
     <div class="card-container">
       <div class="filter-bar">
-        <el-row :gutter="20">
-          <el-col :span="6">
-            <el-input
-              v-model="searchText"
-              :placeholder="$t('uiAutomation.project.searchPlaceholder')"
-              clearable
-              @input="handleSearch"
-            >
-              <template #prefix>
-                <el-icon><Search /></el-icon>
-              </template>
-            </el-input>
-          </el-col>
-          <el-col :span="4">
-            <el-select v-model="statusFilter" :placeholder="$t('uiAutomation.project.statusFilter')" clearable @change="handleFilter">
-              <el-option :label="$t('uiAutomation.status.notStarted')" value="NOT_STARTED" />
-              <el-option :label="$t('uiAutomation.status.inProgress')" value="IN_PROGRESS" />
-              <el-option :label="$t('uiAutomation.status.completed')" value="COMPLETED" />
-            </el-select>
-          </el-col>
-        </el-row>
+        <div class="filter-bar__fields">
+          <el-row :gutter="20">
+            <el-col :span="6">
+              <el-input
+                v-model="searchText"
+                :placeholder="$t('uiAutomation.project.searchPlaceholder')"
+                clearable
+                @input="handleSearch"
+              >
+                <template #prefix>
+                  <el-icon><Search /></el-icon>
+                </template>
+              </el-input>
+            </el-col>
+            <el-col :span="4">
+              <el-select v-model="statusFilter" :placeholder="$t('uiAutomation.project.statusFilter')" clearable @change="handleFilter">
+                <el-option :label="$t('uiAutomation.status.notStarted')" value="NOT_STARTED" />
+                <el-option :label="$t('uiAutomation.status.inProgress')" value="IN_PROGRESS" />
+                <el-option :label="$t('uiAutomation.status.completed')" value="COMPLETED" />
+              </el-select>
+            </el-col>
+          </el-row>
+        </div>
+        <div class="filter-bar__actions">
+          <el-button type="primary" @click="showCreateDialog = true">
+            <el-icon><Plus /></el-icon>
+            {{ $t('uiAutomation.project.newProject') }}
+          </el-button>
+        </div>
       </div>
       
       <el-table :data="projects" v-loading="loading" style="width: 100%">
@@ -477,14 +477,11 @@ onMounted(() => {
 }
 
 .card-container {
-  background-color: #fff;
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  /* styled globally in global.scss .app-shell .card-container */
 }
 
 .filter-bar {
-  margin-bottom: 20px;
+  /* styled globally */
 }
 
 .pagination-container {

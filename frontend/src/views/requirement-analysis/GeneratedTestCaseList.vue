@@ -15,18 +15,21 @@
         </div>
 
         <div class="filter-actions">
-          <button
+          <el-button
             v-if="selectedTasks.length > 0"
-            class="batch-delete-btn"
+            type="danger"
             @click="batchDeleteTasks"
             :disabled="isDeleting">
             <span v-if="isDeleting">{{ $t('generatedTestCases.deleting') }}</span>
             <span v-else>{{ $t('generatedTestCases.batchDelete', { count: selectedTasks.length }) }}</span>
-          </button>
-          <button class="refresh-btn" @click="loadTasks" :disabled="isLoading">
+          </el-button>
+          <el-button
+            type="primary"
+            @click="loadTasks"
+            :disabled="isLoading">
             <span v-if="isLoading">{{ $t('generatedTestCases.loading') }}</span>
             <span v-else>{{ $t('generatedTestCases.refresh') }}</span>
-          </button>
+          </el-button>
         </div>
       </div>
     </div>
@@ -112,23 +115,23 @@
             <div class="body-cell time-cell">{{ formatDateTime(task.created_at) }}</div>
             <div class="body-cell action-cell">
               <div class="action-buttons">
-                <button
-                  class="view-detail-btn"
+                <el-button
+                  type="primary" link size="small"
                   @click="viewTaskDetail(task)">
                   {{ $t('generatedTestCases.viewDetail') }}
-                </button>
-                <button
+                </el-button>
+                <el-button
                   v-if="task.status === 'completed'"
-                  class="adopt-btn"
+                  type="success" size="small"
                   @click="batchAdoptTask(task)">
                   {{ $t('generatedTestCases.batchAdopt') }}
-                </button>
-                <button
+                </el-button>
+                <el-button
                   v-if="task.status === 'completed'"
-                  class="discard-btn"
+                  type="danger" plain size="small"
                   @click="batchDiscardTask(task)">
                   {{ $t('generatedTestCases.batchDiscard') }}
-                </button>
+                </el-button>
               </div>
             </div>
           </div>
@@ -1083,56 +1086,6 @@ export default {
   gap: 10px;
 }
 
-.refresh-btn {
-  background: linear-gradient(135deg, #06b6d4, #0891b2);
-  color: white;
-  border: none;
-  padding: 10px 22px;
-  border-radius: 14px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: 600;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(6, 182, 212, 0.25);
-}
-
-.refresh-btn:hover:not(:disabled) {
-  box-shadow: 0 4px 14px rgba(6, 182, 212, 0.35);
-  transform: translateY(-1px);
-}
-
-.refresh-btn:disabled {
-  background: #cbd5e1;
-  cursor: not-allowed;
-  box-shadow: none;
-  transform: none;
-}
-
-.batch-delete-btn {
-  background: linear-gradient(135deg, #ef4444, #dc2626);
-  color: white;
-  border: none;
-  padding: 10px 22px;
-  border-radius: 14px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: 600;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.25);
-}
-
-.batch-delete-btn:hover:not(:disabled) {
-  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35);
-  transform: translateY(-1px);
-}
-
-.batch-delete-btn:disabled {
-  background: #cbd5e1;
-  cursor: not-allowed;
-  box-shadow: none;
-  transform: none;
-}
-
 /* 统计信息 */
 .stats-section {
   margin-bottom: 15px; /* 进一步减少底部边距 */
@@ -1429,64 +1382,7 @@ export default {
   color: #721c24;
 }
 
-.view-detail-btn {
-  background: linear-gradient(135deg, #06b6d4, #0891b2);
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 0.78rem;
-  font-weight: 600;
-  transition: all 0.2s ease;
-  margin-right: 4px;
-  white-space: nowrap;
-  box-shadow: 0 1px 4px rgba(6, 182, 212, 0.2);
-}
-
-.view-detail-btn:hover {
-  box-shadow: 0 2px 8px rgba(6, 182, 212, 0.3);
-  transform: translateY(-1px);
-}
-
-.adopt-btn {
-  background: linear-gradient(135deg, #059669, #047857);
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 0.78rem;
-  font-weight: 600;
-  transition: all 0.2s ease;
-  margin-right: 4px;
-  white-space: nowrap;
-  box-shadow: 0 1px 4px rgba(5, 150, 105, 0.2);
-}
-
-.adopt-btn:hover {
-  box-shadow: 0 2px 8px rgba(5, 150, 105, 0.3);
-  transform: translateY(-1px);
-}
-
-.discard-btn {
-  background: #f1f5f9;
-  color: #ef4444;
-  border: 1px solid #e2e8f0;
-  padding: 6px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 0.78rem;
-  font-weight: 600;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-.discard-btn:hover {
-  background: #fef2f2;
-  border-color: #fecaca;
-  transform: translateY(-1px);
-}
+/* Row action buttons: now use el-button with global.scss glass styles */
 
 .action-buttons {
   display: flex;
@@ -1858,12 +1754,10 @@ export default {
     flex-wrap: nowrap;
   }
 
-  .view-detail-btn,
-  .adopt-btn,
-  .discard-btn {
+  .action-buttons .el-button {
     margin-right: 0;
-    font-size: 0.65rem;
-    padding: 2px 4px;
+    font-size: 0.68rem;
+    padding: 2px 10px;
   }
 }
 
@@ -1895,11 +1789,9 @@ export default {
     align-items: stretch;
   }
   
-  .view-detail-btn,
-  .adopt-btn,
-  .discard-btn {
-    font-size: 0.65rem;
-    padding: 2px 4px;
+  .action-buttons .el-button {
+    font-size: 0.68rem;
+    padding: 2px 10px;
   }
   
   .form-row {

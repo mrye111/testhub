@@ -1,13 +1,13 @@
 <template>
-  <div class="ai-service-config">
-    <div style="margin-bottom: 20px;">
-      <el-button type="primary" @click="showCreateDialog = true">
-        <el-icon><Plus /></el-icon>
-        {{ $t('apiTesting.aiServiceConfig.addConfig') }}
-      </el-button>
-    </div>
+  <div class="ai-service-config page-container">
+    <div class="config-list card-container">
+      <div class="card-toolbar">
+        <el-button type="primary" @click="showCreateDialog = true">
+          <el-icon><Plus /></el-icon>
+          {{ $t('apiTesting.aiServiceConfig.addConfig') }}
+        </el-button>
+      </div>
 
-    <div class="config-list">
       <el-table :data="configs" v-loading="loading" stripe>
         <el-table-column prop="name" :label="$t('apiTesting.aiServiceConfig.configName')" width="200" />
         <el-table-column prop="service_type_display" :label="$t('apiTesting.aiServiceConfig.serviceType')" width="120" />

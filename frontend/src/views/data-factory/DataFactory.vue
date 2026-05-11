@@ -2485,7 +2485,7 @@ onMounted(async () => {
       .el-table__header {
         th {
           text-align: center;
-          background-color: #f5f7fa;
+          /* 背景色由全局 global.scss 统一管理 */
         }
       }
     }

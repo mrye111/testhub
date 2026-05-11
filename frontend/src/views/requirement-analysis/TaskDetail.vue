@@ -1,19 +1,22 @@
 <template>
-  <div class="task-detail">
-    <h2>{{ $t('taskDetail.title') }} <span v-if="task.title">- {{ task.title }}</span></h2>
-    <div class="task-info">
-      <span class="task-id">{{ $t('taskDetail.taskId') }}: {{ taskId }}</span>
-      <span class="task-status" :class="task.status">{{ getStatusText(task.status) }}</span>
-    </div>
-    <div style="margin-bottom: 20px;">
-      <button
-        v-if="testCases.length > 0"
-        class="export-btn"
-        @click="exportToExcel"
-        :disabled="isExporting">
-        <span v-if="isExporting">{{ $t('taskDetail.exporting') }}</span>
-        <span v-else>{{ $t('taskDetail.exportBtn') }}</span>
-      </button>
+  <div class="task-detail page-container">
+    <div class="card-container">
+      <div class="card-toolbar">
+        <h2 style="margin: 0;">{{ $t('taskDetail.title') }} <span v-if="task.title">- {{ task.title }}</span></h2>
+        <div class="task-info" style="margin-left: 16px;">
+          <span class="task-id">{{ $t('taskDetail.taskId') }}: {{ taskId }}</span>
+          <span class="task-status" :class="task.status">{{ getStatusText(task.status) }}</span>
+        </div>
+        <el-button
+          v-if="testCases.length > 0"
+          type="primary"
+          @click="exportToExcel"
+          :disabled="isExporting"
+          style="margin-left: auto;">
+          <span v-if="isExporting">{{ $t('taskDetail.exporting') }}</span>
+          <span v-else>{{ $t('taskDetail.exportBtn') }}</span>
+        </el-button>
+      </div>
     </div>
 
     <!-- 需求描述折叠卡片 -->
@@ -66,18 +69,18 @@
           </span>
         </div>
         <div class="batch-buttons">
-          <button
-            class="batch-adopt-btn"
+          <el-button
+            type="success"
             :disabled="selectedCases.length === 0"
             @click="batchAdopt">
             {{ $t('taskDetail.batchAdopt', { count: selectedCases.length }) }}
-          </button>
-          <button
-            class="batch-discard-btn"
+          </el-button>
+          <el-button
+            type="danger"
             :disabled="selectedCases.length === 0"
             @click="batchDiscard">
             {{ $t('taskDetail.batchDiscard', { count: selectedCases.length }) }}
-          </button>
+          </el-button>
         </div>
       </div>
 
@@ -122,9 +125,9 @@
             </div>
             <div class="body-cell">
               <div class="action-buttons">
-                <button class="view-btn" @click="viewCaseDetail(testCase, index)">{{ $t('taskDetail.viewDetail') }}</button>
-                <button class="adopt-btn" @click="adoptSingleCase(testCase, index)">{{ $t('taskDetail.adopt') }}</button>
-                <button class="discard-btn" @click="discardSingleCase(testCase, index)">{{ $t('taskDetail.discard') }}</button>
+                <el-button type="primary" link size="small" @click="viewCaseDetail(testCase, index)">{{ $t('taskDetail.viewDetail') }}</el-button>
+                <el-button type="success" size="small" @click="adoptSingleCase(testCase, index)">{{ $t('taskDetail.adopt') }}</el-button>
+                <el-button type="danger" plain size="small" @click="discardSingleCase(testCase, index)">{{ $t('taskDetail.discard') }}</el-button>
               </div>
             </div>
           </div>
@@ -164,7 +167,7 @@
       <div class="modal-content" @click.stop>
         <div class="modal-header">
           <h3>{{ isEditing ? $t('taskDetail.modalEditTitle') : $t('taskDetail.modalViewTitle') }}</h3>
-          <button class="close-btn" @click="closeCaseDetail">×</button>
+          <el-button class="close-btn" @click="closeCaseDetail" type="info" plain size="small">×</el-button>
         </div>
 
         <!-- 查看模式 -->
@@ -231,17 +234,17 @@
         <!-- 底部操作栏 -->
         <div class="modal-footer">
           <template v-if="!isEditing">
-            <button class="action-btn edit-btn" @click="startEdit">
-              <span>{{ $t('taskDetail.btnEdit') }}</span>
-            </button>
-            <button class="action-btn close-btn-footer" @click="closeCaseDetail">{{ $t('taskDetail.btnClose') }}</button>
+            <el-button type="warning" @click="startEdit">
+              {{ $t('taskDetail.btnEdit') }}
+            </el-button>
+            <el-button @click="closeCaseDetail">{{ $t('taskDetail.btnClose') }}</el-button>
           </template>
           <template v-else>
-            <button class="action-btn save-btn" @click="saveEdit" :disabled="isSaving">
+            <el-button type="primary" @click="saveEdit" :disabled="isSaving">
               <span v-if="isSaving">{{ $t('taskDetail.btnSaveing') }}</span>
               <span v-else>{{ $t('taskDetail.btnSave') }}</span>
-            </button>
-            <button class="action-btn cancel-btn" @click="cancelEdit" :disabled="isSaving">{{ $t('taskDetail.btnCancel') }}</button>
+            </el-button>
+            <el-button @click="cancelEdit" :disabled="isSaving">{{ $t('taskDetail.btnCancel') }}</el-button>
           </template>
         </div>
       </div>
@@ -1111,27 +1114,6 @@ export default {
   gap: 10px;
 }
 
-.export-btn {
-  background: #27ae60;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background 0.3s ease;
-  white-space: nowrap;
-}
-
-.export-btn:hover:not(:disabled) {
-  background: #229954;
-}
-
-.export-btn:disabled {
-  background: #bdc3c7;
-  cursor: not-allowed;
-}
-
 .batch-actions {
   background: white;
   border-radius: 8px;
@@ -1164,38 +1146,6 @@ export default {
 .batch-buttons {
   display: flex;
   gap: 10px;
-}
-
-.batch-adopt-btn, .batch-discard-btn {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: all 0.2s ease;
-}
-
-.batch-adopt-btn {
-  background: #27ae60;
-  color: white;
-}
-
-.batch-adopt-btn:hover:not(:disabled) {
-  background: #229954;
-}
-
-.batch-discard-btn {
-  background: #e74c3c;
-  color: white;
-}
-
-.batch-discard-btn:hover:not(:disabled) {
-  background: #c0392b;
-}
-
-.batch-adopt-btn:disabled, .batch-discard-btn:disabled {
-  background: #bdc3c7;
-  cursor: not-allowed;
 }
 
 .testcases-table {
@@ -1304,42 +1254,6 @@ export default {
   display: flex;
   gap: 5px;
   flex-wrap: wrap;
-}
-
-.view-btn, .adopt-btn, .discard-btn {
-  padding: 4px 8px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.8rem;
-  transition: all 0.2s ease;
-}
-
-.view-btn {
-  background: #3498db;
-  color: white;
-}
-
-.view-btn:hover {
-  background: #2980b9;
-}
-
-.adopt-btn {
-  background: #27ae60;
-  color: white;
-}
-
-.adopt-btn:hover {
-  background: #229954;
-}
-
-.discard-btn {
-  background: #e74c3c;
-  color: white;
-}
-
-.discard-btn:hover {
-  background: #c0392b;
 }
 
 .pagination-section {
@@ -1511,60 +1425,6 @@ export default {
   border-top: 1px solid #eee;
   background: #f9f9f9;
   border-radius: 0 0 12px 12px;
-}
-
-.action-btn {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.3s;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.edit-btn {
-  background: #409eff;
-  color: white;
-}
-
-.edit-btn:hover {
-  background: #66b1ff;
-}
-
-.save-btn {
-  background: #67c23a;
-  color: white;
-}
-
-.save-btn:hover:not(:disabled) {
-  background: #85ce61;
-}
-
-.save-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.cancel-btn {
-  background: #909399;
-  color: white;
-}
-
-.cancel-btn:hover:not(:disabled) {
-  background: #a6a9ad;
-}
-
-.close-btn-footer {
-  background: #e4e7ed;
-  color: #606266;
-}
-
-.close-btn-footer:hover {
-  background: #ecf5ff;
 }
 </style>
 

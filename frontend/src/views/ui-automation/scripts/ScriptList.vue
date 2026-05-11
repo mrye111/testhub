@@ -1,18 +1,18 @@
 <template>
-  <div class="script-list">
-    <h1 class="page-title">{{ $t('uiAutomation.script.title') }}</h1>
-    <div style="margin-bottom: 20px;" class="header-actions">
-      <el-select v-model="selectedProject" :placeholder="$t('uiAutomation.common.selectProject')" style="width: 200px; margin-right: 15px" @change="onProjectChange">
-        <el-option v-for="project in projects" :key="project.id" :label="project.name" :value="project.id" />
-      </el-select>
-      <el-button type="primary" @click="goToScriptEditor">
-        <el-icon><Plus /></el-icon>
-        {{ $t('uiAutomation.script.newScript') }}
-      </el-button>
-    </div>
+  <div class="script-list page-container">
+    <div class="card-container">
+      <div class="card-toolbar">
+        <el-select v-model="selectedProject" :placeholder="$t('uiAutomation.common.selectProject')" style="width: 200px" @change="onProjectChange">
+          <el-option v-for="project in projects" :key="project.id" :label="project.name" :value="project.id" />
+        </el-select>
+        <el-button type="primary" @click="goToScriptEditor">
+          <el-icon><Plus /></el-icon>
+          {{ $t('uiAutomation.script.newScript') }}
+        </el-button>
+      </div>
 
-    <div class="main-content">
-      <el-table :data="scripts" stripe style="width: 100%">
+      <div class="main-content">
+        <el-table :data="scripts" stripe style="width: 100%">
         <el-table-column type="index" :label="$t('uiAutomation.script.index')" width="60" />
         <el-table-column :label="$t('uiAutomation.script.projectColumn')" width="150">
           <template #default="{ row }">
@@ -71,6 +71,7 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
         />
+      </div>
       </div>
     </div>
 

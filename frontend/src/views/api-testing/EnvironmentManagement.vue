@@ -1,14 +1,15 @@
 <template>
-  <div class="environment-management">
-    <div class="header">
-      <h3>{{ $t('apiTesting.environment.title') }}</h3>
-      <el-button type="primary" @click="showCreateDialog = true">
-        <el-icon><Plus /></el-icon>
-        {{ $t('apiTesting.environment.createEnvironment') }}
-      </el-button>
-    </div>
+  <div class="environment-management page-container">
+    <div class="card-container">
+      <div class="card-toolbar">
+        <h3 style="margin: 0;">{{ $t('apiTesting.environment.title') }}</h3>
+        <el-button type="primary" @click="showCreateDialog = true" style="margin-left: auto;">
+          <el-icon><Plus /></el-icon>
+          {{ $t('apiTesting.environment.createEnvironment') }}
+        </el-button>
+      </div>
 
-    <el-tabs v-model="activeTab" @tab-change="onTabChange">
+      <el-tabs v-model="activeTab" @tab-change="onTabChange">
       <el-tab-pane :label="$t('apiTesting.environment.scopeTypes.global')" name="GLOBAL">
         <EnvironmentTable
           :data="globalEnvironments"
@@ -47,6 +48,7 @@
         />
       </el-tab-pane>
     </el-tabs>
+    </div>
 
     <!-- 创建/编辑环境对话框 -->
     <el-dialog

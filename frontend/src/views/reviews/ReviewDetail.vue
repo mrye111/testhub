@@ -1,9 +1,11 @@
 <template>
   <div class="page-container">
-    <div style="margin-bottom: 20px;">
-      <el-button @click="$router.back()">{{ $t('reviewDetail.back') }}</el-button>
-      <el-button v-if="canEdit" type="warning" @click="editReview">{{ $t('reviewDetail.edit') }}</el-button>
-      <el-button v-if="canReview" type="success" @click="showReviewDialog">{{ $t('reviewDetail.submitReview') }}</el-button>
+    <div class="card-container">
+      <div class="card-toolbar">
+        <el-button @click="$router.back()">{{ $t('reviewDetail.back') }}</el-button>
+        <el-button v-if="canEdit" type="warning" @click="editReview">{{ $t('reviewDetail.edit') }}</el-button>
+        <el-button v-if="canReview" type="success" @click="showReviewDialog">{{ $t('reviewDetail.submitReview') }}</el-button>
+      </div>
     </div>
 
     <div v-if="review" class="content-container">
@@ -132,10 +134,12 @@
             </template>
           </el-table-column>
           <el-table-column prop="author.username" :label="$t('reviewDetail.author')" width="120" />
-          <el-table-column :label="$t('reviewList.actions')" width="120">
+          <el-table-column :label="$t('reviewList.actions')" width="180">
             <template #default="{ row }">
-              <el-button link type="primary" @click="viewTestcase(row.id)">{{ $t('reviewDetail.view') }}</el-button>
-              <el-button link type="success" @click="addComment(row)">{{ $t('reviewDetail.comment') }}</el-button>
+              <div class="action-cell">
+                <el-button size="small" type="primary" @click="viewTestcase(row.id)">{{ $t('reviewDetail.view') }}</el-button>
+                <el-button size="small" type="success" @click="addComment(row)">{{ $t('reviewDetail.comment') }}</el-button>
+              </div>
             </template>
           </el-table-column>
         </el-table>
@@ -194,8 +198,8 @@
             <div class="checklist-header">
               <span class="checklist-title">{{ review.template.name }} - {{ $t('reviewDetail.checklistTitle') }}</span>
               <div class="checklist-actions">
-                <el-button size="small" @click="checkAll(true)">{{ $t('reviewDetail.allPass') }}</el-button>
-                <el-button size="small" @click="checkAll(false)">{{ $t('reviewDetail.allFail') }}</el-button>
+                <el-button size="small" type="success" @click="checkAll(true)">{{ $t('reviewDetail.allPass') }}</el-button>
+                <el-button size="small" type="danger" @click="checkAll(false)">{{ $t('reviewDetail.allFail') }}</el-button>
               </div>
             </div>
             <div class="checklist-items">
@@ -529,6 +533,20 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+.page-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.action-cell {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
 .content-container {
   display: flex;
   flex-direction: column;
